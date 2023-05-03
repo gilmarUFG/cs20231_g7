@@ -1,7 +1,8 @@
 ### cs_20237
-Repositório definido para a manutenção do controle de versão dos artefatos do projeto de construção de uma API Rest para:
 
-**<descrever o propósito da API>**.
+  ### UniRen
+    Sistema Web destinado a facilitar universitários a encontrar moradias individuais ou compartilhadas.  
+  
 
 ### Grupo
 Esta API será construída pelos componentes do grupo 7:
@@ -31,19 +32,27 @@ Esta API será construída pelos componentes do grupo 7:
 <Adicionar outras regras, se existirem.>
 
 ### Tecnologia de _Front-end_
-<Descrever a tecnologia que será utilizada no _front-end_.>
+  - AngularJS
 
 ### Tecnologia de _Back-end_
-<Descrever a tecnologia que será utilizada no _front-end_.>
+  - Java EE 17
+  - Spring Framework
 
 ### Tecnologia de Persistência de Dados
-<Descrever a tecnologia que será utilizada para Persistência de dados.>
-
+  - MySQL
+  
 ### Local do _Deploy_
-<Descrever onde será feito o _deploy_ da API.>
+  - Amazon Aurora
+  - Amazon EC2
 
 ### Cronograma de Desenvolvimento
 
 |Iteração|Tarefa|Data Início|Data Fim|Responsável|Situação|
 |---|---|---|---|---|---|
-|1|Especificar História de Usuário 1|02/05/2023|03/05/2023|Vitor Lima|Programada|
+|1|Definição do tema e planejamento|17/04/2023|05/05/2023|Vitor Lima|Programada|
+|2|Engenharia de Requisitos|06/05/2023|19/05/2023|Vitor Lima|Programada|
+|3|Modelagem e prototipação|20/05/2023|02/06/2023|Vitor Lima|Programada|
+|4|Desenvolvimento e testes do MVP|03/06/2023|16/06/2023|Vitor Lima|Programada|
+|5|Deploy do MVP e desenvolvimento|17/06/2023|20/05/2023|Vitor Lima|Programada|
+|6|Desenvolvimento, testes e deploy 1|01/07/2023|21/07/2023|Vitor Lima|Programada| 
+|7|Desenvolvimento, testes e deploy 2|22/07/2023|11/08/2023|Vitor Lima|Programada|
