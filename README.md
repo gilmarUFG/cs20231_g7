@@ -1,6 +1,6 @@
 ### cs_20237
 
-  ### UniRen
+  ### UniRent
     Sistema Web destinado a facilitar universitários a encontrar moradias individuais ou compartilhadas.  
   
 
