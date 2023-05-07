@@ -13,7 +13,7 @@ Esta API será construída pelos componentes do grupo 7:
 |202107999|Bruna do Espirito Santo Sousa|[brunadoesp](https://github.com/brunadoesp)|
 |202105038|João Gabriel Tavares Felix Monteiro|[JoaoUFG](https://github.com/JoaoUFG)|
 |202204199|Maicon Brendo da Silva|[MaiconBDSilva](https://github.com/MaiconBDSilva)|
-|202105056|Vitor Lima Ribeiro|[TheLastAurora](https://github.com/TheLastAurora)|
+|202105055|Vitor Lima Ribeiro|[TheLastAurora](https://github.com/TheLastAurora)|
 
 ### Requisitos Funcionais
 1. RF001 - <descrever>
