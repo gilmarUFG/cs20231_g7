@@ -1,3 +1,4 @@
+
 ### cs_20237
 Repositório definido para a manutenção do controle de versão dos artefatos do projeto de construção de uma API Rest para:
 
@@ -47,3 +48,4 @@ Esta API será construída pelos componentes do grupo 7:
 |Iteração|Tarefa|Data Início|Data Fim|Responsável|Situação|
 |---|---|---|---|---|---|
 |1|Especificar História de Usuário 1|02/05/2023|03/05/2023|Vitor Lima|Programada|
+
