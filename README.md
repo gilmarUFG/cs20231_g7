@@ -55,7 +55,6 @@ Esta API será construída pelos componentes do grupo 7:
 
 |Iteração|Tarefa|Data Início|Data Fim|Responsável|Situação|
 |---|---|---|---|---|---|
-
 |1|Definição do tema e planejamento|17/04/2023|05/05/2023|Vitor Lima|CONCLUÍDO|
 |2|Engenharia de Requisitos|06/05/2023|19/05/2023|Vitor Lima|EM ANDAMENTO|
 |3|Modelagem e prototipação|20/05/2023|02/06/2023|Vitor Lima|Programada|
