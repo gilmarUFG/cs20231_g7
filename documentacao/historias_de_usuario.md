@@ -1,20 +1,22 @@
 <div align=center>
-  <img src="./imagens/INFVertical.jpg">
+  <img src="../imagens/INFVertical.jpg">
 </div>
 
 
 <div align="center">SEDI - Secretaria de Estado de Desenvolvimento e Inovação</div>
 <div align="center">STI - Subsecretaria de Tecnologia da Informação</div>
 
+<!--
 ###### Nome do Sistema:
 ###### Estória de Usuário: <_número da estória do usuário_>
 ###### Sprint: <_número da sprint_>
 ###### Nome: <_Nome da Estória. Exemplo: Registrar Frequencia online_>
+-->
 
 ## Histórico
 |**Versão**|**Data**|**Alteração no Documento**|**Autor**|
 |------|----|---------|-----|
-|1.0|<Data da Criação>|<Criação do documento>|< autor >|
+|1.0|19/05/2023| Criação do documento |equipe toda|
 |<Versão>|< data >|< descrição >|< autor >|
 
 ## Visitante
@@ -93,48 +95,48 @@ H.U. 35: **Como** locador **quero** adicionar o valor do condomínio a parte do 
 
 H.U. 36: **Como** locador **quero** adicionar a localização do um imóvel de um anúncio por meio de um mapa **para** que o locatário tenha um referencial visual de localização.
 
-H.U. 377: **Como** locador **quero** que o meu número de telefone informado possa estar associado com o Whatsapp/Telegram **para** que o locatário possa se comunicar comigo por outras plataformas de forma rápida.
+H.U. 37: **Como** locador **quero** que o meu número de telefone informado possa estar associado com o Whatsapp/Telegram **para** que o locatário possa se comunicar comigo por outras plataformas de forma rápida.
 
 
 ## Locatário
 
-**Como** locatário, **quero** realizar login  **para**  acessar todas as funcionalidades da plataforma
+H.U. 38: **Como** locatário, **quero** realizar login  **para**  acessar todas as funcionalidades da plataforma
 
-**Como** locatário, **quero** realizar logoff  **para**  poder me desconectar.
+H.U. 39: **Como** locatário, **quero** realizar logoff  **para**  poder me desconectar.
 
-**Como** locatário, **quero** poder recuperar minha senha  **para**  ter acesso a conta mesmo com a senha esquecida/ perdida.
+H.U. 40: **Como** locatário, **quero** poder recuperar minha senha  **para**  ter acesso a conta mesmo com a senha esquecida/ perdida.
 
-**Como** locatário, **quero** poder reportar um anúncio  **para**  que ele não apareça mais na plataforma.
+H.U. 41: **Como** locatário, **quero** poder reportar um anúncio  **para**  que ele não apareça mais na plataforma.
 
-**Como** locatário, **quero** poder favoritar um anúncio,  **para**  que eu tenha fácil acesso a ele.
+H.U. 42: **Como** locatário, **quero** poder favoritar um anúncio,  **para**  que eu tenha fácil acesso a ele.
 
-**Como** locatário, **quero** poder favoritar um anúncio,  **para**  que eu possa acompanhar sua lista de interesses e ser notificado.
+H.U. 43: **Como** locatário, **quero** poder favoritar um anúncio,  **para**  que eu possa acompanhar sua lista de interesses e ser notificado.
 
-**Como** locatário, **quero** editar meus dados pessoais  **para**  que eu possa manter meu cadastro atualizado.
+H.U. 44: **Como** locatário, **quero** editar meus dados pessoais  **para**  que eu possa manter meu cadastro atualizado.
 
-**Como** locatário, **quero** apagar minha conta sempre que eu quiser  **para**  que eu possa ter controle sobre os meus dados e minha conta.
+H.U. 45: **Como** locatário, **quero** apagar minha conta sempre que eu quiser  **para**  que eu possa ter controle sobre os meus dados e minha conta.
 
-**Como** locatário **quero** avaliar o dono de um anúncio em que tive interação prévia, seja por chat ou por efetivação de contrato de aluguel **para** que  ele possa receber uma métrica de atendimento e disponibilidade.
+H.U. 46: **Como** locatário **quero** avaliar o dono de um anúncio em que tive interação prévia, seja por chat ou por efetivação de contrato de aluguel **para** que  ele possa receber uma métrica de atendimento e disponibilidade.
 
-**Como** locatário **quero** adicionar interesse em um anúncio **para** que o locador possa ver que estou interessado.
+H.U. 47: **Como** locatário **quero** adicionar interesse em um anúncio **para** que o locador possa ver que estou interessado.
 
-**Como** locatário **quero** adicionar interesse em um anúncio **para** que outros locatários possam ver que eu estou interessado.
+H.U. 48: **Como** locatário **quero** adicionar interesse em um anúncio **para** que outros locatários possam ver que eu estou interessado.
 
-**Como** locatário **quero** buscar residências **para** encontrar diversas opções de aluguel.
+H.U. 49: **Como** locatário **quero** buscar residências **para** encontrar diversas opções de aluguel.
 
-**Como** locatário **quero**  adicionar filtros na busca **para** encontrar opções mais específicas e adequadas ao meu interesse.
+H.U. 50: **Como** locatário **quero**  adicionar filtros na busca **para** encontrar opções mais específicas e adequadas ao meu interesse.
 
-**Como** locatário **quero** poder visualizar uma lista geral de residências **para** ter uma visão geral dos aluguéis.
+H.U. 51: **Como** locatário **quero** poder visualizar uma lista geral de residências **para** ter uma visão geral dos aluguéis.
 
-**Como** locatário **quero** visualizar a localização de imóveis em um anúncio por um mapa **para** que tenha um referencial de localização.
+H.U. 52: **Como** locatário **quero** visualizar a localização de imóveis em um anúncio por um mapa **para** que tenha um referencial de localização.
 
-**Como** locatário **quero** copiar um número de telefone de um anúncio **para** facilitar meu acesso.
+H.U. 53: **Como** locatário **quero** copiar um número de telefone de um anúncio **para** facilitar meu acesso.
 
-**Como** locatário **quero** conversar com o locador via chat de texto **para** facilitar minha comunicação com o anunciante.
+H.U. 54: **Como** locatário **quero** conversar com o locador via chat de texto **para** facilitar minha comunicação com o anunciante.
 
-**Como** locatário **quero** visualizar a distância do imóvel do anúncio até um destino específico **para** que eu possa verificar se geograficamente aquele aluguel atende as minhas necessidades 
+H.U. 55: **Como** locatário **quero** visualizar a distância do imóvel do anúncio até um destino específico **para** que eu possa verificar se geograficamente aquele aluguel atende as minhas necessidades 
 
-**Como** locatário **quero** que ver a lista de outros locatários interessados num anúncio, caso ele seja do tipo de sublocação, **para** que eu possa conhecer e organizar um grupo.
+H.U. 56: **Como** locatário **quero** que ver a lista de outros locatários interessados num anúncio, caso ele seja do tipo de sublocação, **para** que eu possa conhecer e organizar um grupo.
 
 
 
