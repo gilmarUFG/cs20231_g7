@@ -1,6 +1,9 @@
 # cs20231_g7
 Grupo 7 - UniRent
 =======
+=======
+
+>>>>>>> ed4978d603003ca5831a326fc6c31d1142be355d
 ### cs_20237
 
   ### UniRent
@@ -52,6 +55,7 @@ Esta API será construída pelos componentes do grupo 7:
 
 |Iteração|Tarefa|Data Início|Data Fim|Responsável|Situação|
 |---|---|---|---|---|---|
+
 |1|Definição do tema e planejamento|17/04/2023|05/05/2023|Vitor Lima|CONCLUÍDO|
 |2|Engenharia de Requisitos|06/05/2023|19/05/2023|Vitor Lima|EM ANDAMENTO|
 |3|Modelagem e prototipação|20/05/2023|02/06/2023|Vitor Lima|Programada|
@@ -59,3 +63,4 @@ Esta API será construída pelos componentes do grupo 7:
 |5|Deploy do MVP e desenvolvimento|17/06/2023|20/05/2023|Vitor Lima|Programada|
 |6|Desenvolvimento, testes e deploy 1|01/07/2023|21/07/2023|Vitor Lima|Programada| 
 |7|Desenvolvimento, testes e deploy 2|22/07/2023|11/08/2023|Vitor Lima|Programada|
+
