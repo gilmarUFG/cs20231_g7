@@ -98,9 +98,9 @@ RNF006 Design responsivo do sistema web, para que seja possível a sua utilizaç
 |---|---|---|---|---|---|
 |1|Definição do tema e planejamento|17/04/2023|05/05/2023|Vitor Lima|CONCLUÍDO|
 |2|Engenharia de Requisitos|06/05/2023|19/05/2023|Vitor Lima|EM ANDAMENTO|
-|3|Modelagem e prototipação|20/05/2023|02/06/2023|Vitor Lima|Programada|
-|4|Desenvolvimento e testes do MVP|03/06/2023|16/06/2023|Vitor Lima|Programada|
-|5|Deploy do MVP e desenvolvimento|17/06/2023|20/05/2023|Vitor Lima|Programada|
-|6|Desenvolvimento, testes e deploy 1|01/07/2023|21/07/2023|Vitor Lima|Programada| 
-|7|Desenvolvimento, testes e deploy 2|22/07/2023|11/08/2023|Vitor Lima|Programada|
+|3|1º sprint - modelagem, implementação, teste do MVP e deploy|20/05/2023|02/06/2023|Vitor Lima|Programada|
+|4|2º sprint - modelagem, implementação, teste do MVP e deploy|03/06/2023|16/06/2023|Vitor Lima|Programada|
+|5|3º sprint - modelagem, implementação, teste e deploy|17/06/2023|20/05/2023|Vitor Lima|Programada|
+|6|4º sprint - modelagem, implementação, teste e deploy|01/07/2023|21/07/2023|Vitor Lima|Programada| 
+|7|5º sprint - modelagem, implementação, teste e deploy|22/07/2023|11/08/2023|Vitor Lima|Programada|
 
