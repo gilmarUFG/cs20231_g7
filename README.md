@@ -91,6 +91,7 @@ RNF006 Design responsivo do sistema web, para que seja possível a sua utilizaç
 ### Local do _Deploy_
   - Amazon RDS
   - Amazon EC2
+  - Amazon CloudFront
 
 ### Cronograma de Desenvolvimento
 
