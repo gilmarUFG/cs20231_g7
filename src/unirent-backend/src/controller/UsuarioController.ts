@@ -40,7 +40,7 @@ export class UsuarioController{
             res.json({token: token}).status(201);//created
 
         }catch (err){
-            res.json(`Ocorreu um erro no cadastro: ${err.message}`);
+            res.json(`Ocorreu um erro no cadastro: ${err.message}`).status(500);
         }
 
     }
@@ -59,7 +59,7 @@ export class UsuarioController{
             res.json({token: token});
 
         }catch (err){
-            res.json(err.message).status(404).send();
+            res.json(err.message).status(500).send();
         }
     }
 
@@ -73,7 +73,7 @@ export class UsuarioController{
             res.json(usuarioIdentificado).status(200).send();
             next();
         }catch (err){
-            res.json(`Toekn inválido: ${err}`).send(404);
+            res.json(`Toekn inválido: ${err}`).send(500);
         }
     }
 
