@@ -37,7 +37,7 @@ export class UsuarioController{
         //const token = jwt.sign({email: dadosIniciais.email, senha: dadosIniciais.senha},Environment.SECRET_KEY);
 
 
-            res.json(token).status(201);//created
+            res.json({token: token}).status(201);//created
 
         }catch (err){
             res.json(`Ocorreu um erro no cadastro: ${err.message}`);
@@ -56,7 +56,7 @@ export class UsuarioController{
 
 
             const token = jwt.sign(Object.assign({}, usuario), Environment.SECRET_KEY);
-            res.json(token);
+            res.json({token: token});
 
         }catch (err){
             res.json(err.message).status(404).send();
