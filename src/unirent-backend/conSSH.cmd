@@ -1,0 +1,1 @@
+ssh -i unirent-ssh_2.pem -f -N -L 3310:unirent-db.c7lppi3ery9a.us-east-1.rds.amazonaws.com:3306 ec2-user@3.237.181.81 -v
