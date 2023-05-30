@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UsuarioDadosIniciais } from "../controller/UsuarioController.js";
+import { Anuncio } from "./Anuncio.js";
 
 
 
@@ -27,12 +28,16 @@ export class Usuario {
     @Column()
     universidade: String;
 
+    @OneToMany(()=> Anuncio, anuncio=> anuncio.usuario, {cascade: true})
+    anuncios: Anuncio[];
+
 
     withProperties(propriedades:(UsuarioDadosIniciais)){
         this.email = propriedades.email;
         this.senha = propriedades.senha;
         this.nome = propriedades.nome;
         this.universidade = propriedades.universidade;
+        this.anuncios = [];
         return this;
     }
 

@@ -59,23 +59,34 @@ export class UsuarioController{
             res.json({token: token});
 
         }catch (err){
-            res.json(err.message).status(500).send();
+            res.status(500).json(err.message);
         }
     }
 
 
+public static async listarUsuarios(req: Request, res: Response){
+        try{
+            res.json(await UniRentDataSource.getRepository(Usuario).find()).status(200).send();
+        }catch (err){
+            res.sendStatus(500);
 
+        }
+
+}
     public static async verificarToken(req: Request, res: Response, next: NextFunction){
+        console.log(`verificando o ${req.body.token}}`)
         try {
             const {token} = req.body;
-            const usuarioIdentificado = jwt.verify(token, Environment.SECRET_KEY);
+          jwt.verify(token, Environment.SECRET_KEY);
 
-            res.json(usuarioIdentificado).status(200).send();
+
             next();
         }catch (err){
-            res.json(`Toekn inválido: ${err}`).send(500);
+            res.status(500).json(`Toekn inválido: ${err}`);
         }
     }
+
+
 
 
 
