@@ -6,41 +6,41 @@ import { Environment } from "../config/Environment.js";
 import chalk from "chalk";
 
 
-export interface UsuarioDadosIniciais{
+export interface DadosIniciais {
     email: string;
     senha: string;
     nome: string;
     universidade: string;
 }
+
+
+export interface DadosNaoSensiveis {
+    id: string; //todo TROCAR ESSE TIPO
+    email: string;
+    nome: string;
+}
+const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
+
+
 export class UsuarioController{
 
     public static async cadastrar(req: Request, res: Response){
-        const dadosIniciais: UsuarioDadosIniciais = req.body;
+        const dadosIniciais: DadosIniciais = req.body;
 
         try{
             //checar se já existe cadastro
-            if(
-                (await UniRentDataSource.getRepository(Usuario).findOneBy({email: dadosIniciais.email})) !==null
-            )
-                throw new Error(`Usuario já cadastrado`)
+            if((await UsuarioRepository.findOneBy({email: dadosIniciais.email})) !==null)
+                throw new Error(`Usuario já cadastrado`);
 
-        // salvar novo cadastro
-        //const usuario = req.body;
             const usuario = new Usuario().withProperties(dadosIniciais);
+            await UsuarioRepository.save(usuario);
 
+            const token = jwt.sign({id: usuario.id},Environment.SECRET_KEY);
 
-        await UniRentDataSource.getRepository(Usuario).save(usuario);
-
-        //criar JWT e retorná-lo
-        const token = jwt.sign(dadosIniciais,Environment.SECRET_KEY);
-
-        //const token = jwt.sign({email: dadosIniciais.email, senha: dadosIniciais.senha},Environment.SECRET_KEY);
-
-
-            res.json(token).status(201);//created
+            res.json({token: token}).status(201);//created
 
         }catch (err){
-            res.json(`Ocorreu um erro no cadastro: ${err.message}`);
+            res.json(`Ocorreu um erro no cadastro: ${err.message}`).status(500);
         }
 
     }
@@ -48,34 +48,52 @@ export class UsuarioController{
     public static async login(req: Request, res: Response){
         try{
            const {email,senha} = req.body;
-           const usuario =  await UniRentDataSource.getRepository(Usuario).findOneBy({email: email});
+           const usuario =  await UsuarioRepository.findOneBy({email: email});
 
            if(usuario===null) throw new Error(`Usuario de email ${email} não cadastrado`);
 
            if(senha !== usuario.senha) throw new Error(`Email ou senha incorretos`);
 
 
-            const token = jwt.sign(Object.assign({}, usuario), Environment.SECRET_KEY);
-            res.json(token);
+            const token = jwt.sign({id: usuario.id}, Environment.SECRET_KEY);
+            res.json({token: token});
 
         }catch (err){
-            res.json(err.message).status(404).send();
+            res.status(500).json(err.message);
         }
     }
 
 
+public static async listarUsuarios(req: Request, res: Response){
+        try{
+            const listaDeUsers = await UsuarioRepository.find();
 
+            const listaSegura = listaDeUsers.map((usuarioCompleto)=>{
+                let {id,nome,email}: DadosNaoSensiveis = usuarioCompleto;
+                return {id,nome,email};
+            })
+
+            res.json(listaSegura);
+        }catch (err){
+            res.sendStatus(500);
+
+        }
+
+}
     public static async verificarToken(req: Request, res: Response, next: NextFunction){
+        console.log(`verificando o ${req.body.token}}`)
         try {
             const {token} = req.body;
-            const usuarioIdentificado = jwt.verify(token, Environment.SECRET_KEY);
+          jwt.verify(token, Environment.SECRET_KEY);
 
-            res.json(usuarioIdentificado).status(200).send();
+
             next();
         }catch (err){
-            res.json(`Toekn inválido: ${err}`).send(404);
+            res.status(500).json(`Toekn inválido: ${err}`);
         }
     }
+
+
 
 
 

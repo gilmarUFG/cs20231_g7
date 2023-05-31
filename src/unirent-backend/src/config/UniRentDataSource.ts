@@ -1,6 +1,7 @@
 import {DataSource} from "typeorm";
 import { Environment } from "./Environment.js";
 import { Usuario } from "../entity/Usuario.js";
+import { Anuncio } from "../entity/Anuncio.js";
 
 
 
@@ -13,7 +14,7 @@ export const UniRentDataSource = new DataSource({
     database: "unirent",
     synchronize: true, // true para o banco seguir o seu projeto | false para o seu projeto não mexer com ALTER TABLE
     logging: false,
-    entities: [Usuario],
+    entities: [Usuario,Anuncio],
     migrations: [],
     subscribers: [],
 })

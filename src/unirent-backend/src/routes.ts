@@ -1,14 +1,21 @@
 import { Request, Response, Router } from "express";
 import { UsuarioController } from "./controller/UsuarioController.js";
 import { Usuario } from "./entity/Usuario.js";
+import { AnuncioController } from "./controller/AnuncioController.js";
 
 export const routes = Router();
 
-routes.post('/usuario/cadastro', UsuarioController.cadastrar);
+routes.get('/usuario/listar',UsuarioController.listarUsuarios);
 
-routes.post('/usuario/login', UsuarioController.login);
+routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
 
-routes.post('/usuario/verificar', UsuarioController.verificarToken);
+routes.post('/usuario/login', UsuarioController.login);//retorna o token
+
+export const routesSecurity = Router();
+routesSecurity.use(UsuarioController.verificarToken);
+routesSecurity.post('/anuncio/cadastrar/:id',AnuncioController.cadastrar);
+
+
 
 
 
