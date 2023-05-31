@@ -6,36 +6,36 @@ import { Environment } from "../config/Environment.js";
 import chalk from "chalk";
 
 
-export interface UsuarioDadosIniciais{
+export interface DadosIniciais {
     email: string;
     senha: string;
     nome: string;
     universidade: string;
 }
+
+
+export interface DadosNaoSensiveis {
+    id: string; //todo TROCAR ESSE TIPO
+    email: string;
+    nome: string;
+}
+const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
+
+
 export class UsuarioController{
 
     public static async cadastrar(req: Request, res: Response){
-        const dadosIniciais: UsuarioDadosIniciais = req.body;
+        const dadosIniciais: DadosIniciais = req.body;
 
         try{
             //checar se já existe cadastro
-            if(
-                (await UniRentDataSource.getRepository(Usuario).findOneBy({email: dadosIniciais.email})) !==null
-            )
-                throw new Error(`Usuario já cadastrado`)
+            if((await UsuarioRepository.findOneBy({email: dadosIniciais.email})) !==null)
+                throw new Error(`Usuario já cadastrado`);
 
-        // salvar novo cadastro
-        //const usuario = req.body;
             const usuario = new Usuario().withProperties(dadosIniciais);
+            await UsuarioRepository.save(usuario);
 
-
-        await UniRentDataSource.getRepository(Usuario).save(usuario);
-
-        //criar JWT e retorná-lo
-        const token = jwt.sign(dadosIniciais,Environment.SECRET_KEY);
-
-        //const token = jwt.sign({email: dadosIniciais.email, senha: dadosIniciais.senha},Environment.SECRET_KEY);
-
+            const token = jwt.sign({id: usuario.id},Environment.SECRET_KEY);
 
             res.json({token: token}).status(201);//created
 
@@ -48,14 +48,14 @@ export class UsuarioController{
     public static async login(req: Request, res: Response){
         try{
            const {email,senha} = req.body;
-           const usuario =  await UniRentDataSource.getRepository(Usuario).findOneBy({email: email});
+           const usuario =  await UsuarioRepository.findOneBy({email: email});
 
            if(usuario===null) throw new Error(`Usuario de email ${email} não cadastrado`);
 
            if(senha !== usuario.senha) throw new Error(`Email ou senha incorretos`);
 
 
-            const token = jwt.sign(Object.assign({}, usuario), Environment.SECRET_KEY);
+            const token = jwt.sign({id: usuario.id}, Environment.SECRET_KEY);
             res.json({token: token});
 
         }catch (err){
@@ -66,7 +66,14 @@ export class UsuarioController{
 
 public static async listarUsuarios(req: Request, res: Response){
         try{
-            res.json(await UniRentDataSource.getRepository(Usuario).find()).status(200).send();
+            const listaDeUsers = await UsuarioRepository.find();
+
+            const listaSegura = listaDeUsers.map((usuarioCompleto)=>{
+                let {id,nome,email}: DadosNaoSensiveis = usuarioCompleto;
+                return {id,nome,email};
+            })
+
+            res.json(listaSegura);
         }catch (err){
             res.sendStatus(500);
 

@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { UsuarioDadosIniciais } from "../controller/UsuarioController.js";
+import { DadosIniciais } from "../controller/UsuarioController.js";
 import { Anuncio } from "./Anuncio.js";
 
 
@@ -32,7 +32,7 @@ export class Usuario {
     anuncios: Anuncio[];
 
 
-    withProperties(propriedades:(UsuarioDadosIniciais)){
+    withProperties(propriedades:(DadosIniciais)){
         this.email = propriedades.email;
         this.senha = propriedades.senha;
         this.nome = propriedades.nome;
