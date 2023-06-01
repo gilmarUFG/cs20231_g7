@@ -32,7 +32,7 @@ export class Usuario {
     anuncios: Anuncio[];
 
 
-    withProperties(propriedades:(DadosIniciais)){
+    withProperties(propriedades:DadosIniciais){
         this.email = propriedades.email;
         this.senha = propriedades.senha;
         this.nome = propriedades.nome;
