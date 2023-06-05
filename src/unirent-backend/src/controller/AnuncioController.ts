@@ -3,20 +3,26 @@ import { Usuario } from "../entity/Usuario.js";
 import { UniRentDataSource } from "../config/UniRentDataSource.js";
 import { Anuncio } from "../entity/Anuncio.js";
 import chalk from "chalk";
-import { TipoMoradia } from "../enums/TipoMoradia.js";
+import { TipoAluguel } from "../enums/TipoAluguel.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { Universidade } from "../entity/Universidade.js";
+import { paginate } from "typeorm-pagination/dist/helpers/pagination.js";
 
 export interface AnuncioDadosIniciais{
     descricao: string;
 
     titulo: string;
 
-    tipoMoradia: TipoMoradia;
+    tipoMoradia: TipoAluguel;
+
+    tamanhoM2: string;
+
+    endereco: string;
 
 
 }
 
-
+const anuncioRepository = UniRentDataSource.getRepository(Anuncio);
 export class AnuncioController{
 
     public static async cadastrar(req: Request, res: Response){
@@ -26,7 +32,7 @@ export class AnuncioController{
                     anuncios: true
                 },
                 where: {
-                    id: req.params.id
+                    id: Number.parseInt(req.params.id)
                 }
             })
 
@@ -56,6 +62,15 @@ export class AnuncioController{
         }
 
     }
+
+
+    public static async filtrar(req: Request, res: Response){
+
+
+
+
+    }
+
 
 
 

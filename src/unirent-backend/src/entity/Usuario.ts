@@ -9,7 +9,7 @@ import { Anuncio } from "./Anuncio.js";
 export class Usuario {
 
     @PrimaryGeneratedColumn("increment")
-    id: string;
+    id: number;
 
     @Column({
         length: 30

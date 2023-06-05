@@ -15,7 +15,7 @@ export interface DadosIniciais {
 
 
 export interface DadosNaoSensiveis {
-    id: string; //todo TROCAR ESSE TIPO
+    id: number; //todo TROCAR ESSE TIPO
     email: string;
     nome: string;
 }
