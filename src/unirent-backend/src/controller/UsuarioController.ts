@@ -15,7 +15,7 @@ export interface DadosIniciais {
 
 
 export interface DadosNaoSensiveis {
-    id: string; //todo TROCAR ESSE TIPO
+    id: number; //todo TROCAR ESSE TIPO
     email: string;
     nome: string;
 }
@@ -25,14 +25,17 @@ const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
 export class UsuarioController{
 
     public static async cadastrar(req: Request, res: Response){
-        const dadosIniciais: DadosIniciais = req.body;
-
         try{
-            //checar se já existe cadastro
-            if((await UsuarioRepository.findOneBy({email: dadosIniciais.email})) !==null)
-                throw new Error(`Usuario já cadastrado`);
+            const {email, senha, nome, universidade}: DadosIniciais = req.body;
+            UsuarioController.isBodyValido(req.body, res);
 
-            const usuario = new Usuario().withProperties(dadosIniciais);
+            if((await UsuarioRepository.findOneBy({email: email})) !==null){
+                res.status(500);
+                throw new Error(`email já cadastrado`);
+            }
+
+            const usuario = new Usuario().withProperties(req.body);
+
             await UsuarioRepository.save(usuario);
 
             const token = jwt.sign({id: usuario.id},Environment.SECRET_KEY);
@@ -40,31 +43,62 @@ export class UsuarioController{
             res.json({token: token}).status(201);//created
 
         }catch (err){
-            res.json(`Ocorreu um erro no cadastro: ${err.message}`).status(500);
+
+
+            res.json(`ERRO NO CADASTRO: ${err.message}`);
         }
 
     }
 
+    private static isBodyValido({email, senha}, res: Response) {
+
+
+        if(senha==null || email==null) {
+            res.status(400);
+            throw new Error(`email ou senha nulo(s)`)
+        }
+
+
+        if(email.replace(/\s/g, '')=='' || senha.replace(/\s/g, '')=='') {
+            res.status(400);
+            throw new Error(`email ou senha em branco(s).`)
+        }
+
+
+    }
+
+
+
+
+
     public static async login(req: Request, res: Response){
         try{
            const {email,senha} = req.body;
+            UsuarioController.isBodyValido({email,senha},res);
+
            const usuario =  await UsuarioRepository.findOneBy({email: email});
 
-           if(usuario===null) throw new Error(`Usuario de email ${email} não cadastrado`);
+           if(usuario===null) {
+               res.status(500);
+               throw new Error(`Usuario de email ${email} não cadastrado`);
+           }
 
-           if(senha !== usuario.senha) throw new Error(`Email ou senha incorretos`);
+           if(senha !== usuario.senha) {
+               res.status(500);
+               throw new Error(`Email ou senha incorretos`);
+           }
 
 
             const token = jwt.sign({id: usuario.id}, Environment.SECRET_KEY);
             res.json({token: token});
 
         }catch (err){
-            res.status(500).json(err.message);
+            res.json(`ERRO NO LOGIN: ${err.message}`);
         }
     }
 
 
-public static async listarUsuarios(req: Request, res: Response){
+public static async listar(req: Request, res: Response){
         try{
             const listaDeUsers = await UsuarioRepository.find();
 

@@ -9,7 +9,7 @@ import { Anuncio } from "./Anuncio.js";
 export class Usuario {
 
     @PrimaryGeneratedColumn("increment")
-    id: string;
+    id: number;
 
     @Column({
         length: 30
@@ -32,7 +32,7 @@ export class Usuario {
     anuncios: Anuncio[];
 
 
-    withProperties(propriedades:(DadosIniciais)){
+    withProperties(propriedades:DadosIniciais){
         this.email = propriedades.email;
         this.senha = propriedades.senha;
         this.nome = propriedades.nome;
