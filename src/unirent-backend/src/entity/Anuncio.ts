@@ -66,9 +66,20 @@ export class Anuncio{
 
 
 
-    withProperties(body: AnuncioDadosIniciais) {
-        this.descricao = body.descricao;
 
+    withProperties(body: AnuncioDadosIniciais) {
+        this.tipoMoradia = body.tipoMoradia;
+        this.dataPublicacao = body.dataPublicacao;
+        this.tipoImovel = body.tipoImovel;
+        this.quartos = body.quartos;
+        this.area = body.area;
+        this.vagasGaragem = body.vagasGaragem;
+        this.aceitaAnimais = body.aceitaAnimais;
+        this.valorAlguel = body.valorAlguel;
+        this.valorCondominio = body.valorCondominio;
+        this.valorIPTU = body.valorIPTU;
+        this.comodidades = body.comodidades;
+        this.descricao = body.descricao;
         return this;
     }
 }

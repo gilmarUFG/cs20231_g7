@@ -1,4 +1,8 @@
 
 export enum TipoImovel{
-    DEFAULT = "default"
+    DEFAULT = "default",
+    APARTAMENTO = "apartamento",
+    CASA = "casa",
+
+    KINET = "kitnet"
 }

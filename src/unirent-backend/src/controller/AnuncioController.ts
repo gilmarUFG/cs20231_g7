@@ -7,17 +7,22 @@ import { TipoAluguel } from "../enums/TipoAluguel.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Universidade } from "../entity/Universidade.js";
 import { paginate } from "typeorm-pagination/dist/helpers/pagination.js";
+import { TipoImovel } from "../enums/TipoImovel.js";
+import { DadosIniciais } from "./UsuarioController.js";
 
 export interface AnuncioDadosIniciais{
-    descricao: string;
-
-    titulo: string;
-
     tipoMoradia: TipoAluguel;
-
-    tamanhoM2: string;
-
-    endereco: string;
+    dataPublicacao: Date;
+    tipoImovel: TipoImovel;
+    quartos: number;
+    area: number;
+    vagasGaragem: number;
+    aceitaAnimais: boolean;
+    valorAlguel: number;
+    valorCondominio: number;
+    valorIPTU: number;
+    comodidades: string[];
+    descricao: string;
 
 
 }
@@ -41,7 +46,10 @@ export class AnuncioController{
                 throw new Error(`o id recebido nao esta associado a nenhum usuario`);
             }
 
-            usuarioDono.anuncios.push(new Anuncio().withProperties(req.body));
+            //const x = await AnuncioController.bulkCad(req.body.anuncios);
+
+
+            usuarioDono.anuncios.push(new Anuncio().withProperties(req.body.anuncio));
             await UniRentDataSource.getRepository(Usuario).save(usuarioDono);
             res.sendStatus(200);
 
@@ -50,6 +58,15 @@ export class AnuncioController{
             res.json({ erro: `Erro no cadastro do anúncio. ${err.message }`})
         }
     }
+
+    private static async bulkCad(dadosInicias: AnuncioDadosIniciais[]){
+        dadosInicias.forEach(dados=>{
+             anuncioRepository.save(new Anuncio().withProperties(dados));
+        })
+
+    }
+
+
 
 
     public static async listar(req: Request, res: Response){
@@ -64,13 +81,35 @@ export class AnuncioController{
     }
 
 
-    public static async filtrar(req: Request, res: Response){
+    public static async listarPageable(req: Request, res: Response){
+        try {
+            const [result,total] = await AnuncioController.queryPageable(
+                Number.parseInt(req.params.take),
+                Number.parseInt(req.params.page),
+                Number.parseInt(req.params.limit)
+            );
 
 
+            res.json({
+                anuncios: result,
+                total: total
+            })
+        }catch (err){
 
+            res.json(`Ocorreu um problema na listagem paginável de anuncios: ${err.message} || ${err.stackTrace}`);
+
+        }
 
     }
 
+    private static async queryPageable(take: number, page: number, limit: number): Promise<[Anuncio[],number]>{
+        return  anuncioRepository.findAndCount({
+
+            take: take,
+            skip: (page-1) * (limit)
+        })
+
+    }
 
 
 
