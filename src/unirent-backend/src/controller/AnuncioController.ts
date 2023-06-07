@@ -9,9 +9,10 @@ import { Universidade } from "../entity/Universidade.js";
 import { paginate } from "typeorm-pagination/dist/helpers/pagination.js";
 import { TipoImovel } from "../enums/TipoImovel.js";
 import { DadosIniciais } from "./UsuarioController.js";
+import { FindOptionsWhere, LessThanOrEqual, Like } from "typeorm";
 
 export interface AnuncioDadosIniciais{
-    tipoMoradia: TipoAluguel;
+    tipoAluguel: TipoAluguel;
     dataPublicacao: Date;
     tipoImovel: TipoImovel;
     quartos: number;
@@ -27,7 +28,11 @@ export interface AnuncioDadosIniciais{
 
 }
 
+
 const anuncioRepository = UniRentDataSource.getRepository(Anuncio);
+
+
+
 export class AnuncioController{
 
     public static async cadastrar(req: Request, res: Response){
@@ -37,7 +42,7 @@ export class AnuncioController{
                     anuncios: true
                 },
                 where: {
-                    id: Number.parseInt(req.params.id)
+                    id: req.body.usuarioId
                 }
             })
 
@@ -81,30 +86,59 @@ export class AnuncioController{
     }
 
 
-    public static async listarPageable(req: Request, res: Response){
+    public static async filtrarPageable(req: Request, res: Response){
         try {
-            const [result,total] = await AnuncioController.queryPageable(
-                Number.parseInt(req.params.take),
-                Number.parseInt(req.params.page),
-                Number.parseInt(req.params.limit)
+            let takeFlag = 0;
+            let pageFlag = 0;
+            let limitFlag = 0;
+            let take = (typeof req.query.take !== 'string') ? takeFlag=1 : Number.parseInt(req.query.take);
+            let page = (typeof req.query.page !== 'string' ) ? pageFlag=1: Number.parseInt(req.query.page);
+            let limit = (typeof req.query.limit !== 'string') ? limitFlag=1: Number.parseInt(req.query.limit);
+
+                if(takeFlag || pageFlag || limitFlag)
+                {
+                    res.status(403);
+                    throw new Error(`valor inválido para take,page ou limit`)
+                }
+
+
+
+            const [result,total] = await AnuncioController.findAllPageable(
+                take,
+                page,
+                limit,
+                req.body
             );
 
 
             res.json({
                 anuncios: result,
-                total: total
+                total: total,
+                pagina: page,
+                registros: result.length,
+                limitePorPagina: limit
             })
         }catch (err){
 
-            res.json(`Ocorreu um problema na listagem paginável de anuncios: ${err.message} || ${err.stackTrace}`);
+            res.json(`Ocorreu um problema na listagem paginável de anuncios: ${err.message}`);
 
         }
 
     }
 
-    private static async queryPageable(take: number, page: number, limit: number): Promise<[Anuncio[],number]>{
-        return  anuncioRepository.findAndCount({
+    private static async findAllPageable(take: number, page: number, limit: number,filtro: any): Promise<[Anuncio[],number]>{
 
+
+
+        return  anuncioRepository.findAndCount({
+            where:{
+                tipoAluguel: Like(filtro.tipoAluguel || "%%"),
+                valorAluguel: LessThanOrEqual(Number.parseFloat(filtro.valorAluguel) || Number.MAX_VALUE),
+                quartos: LessThanOrEqual(Number.parseInt(filtro.quartos) || Number.MAX_VALUE),
+                area: LessThanOrEqual(Number.parseFloat(filtro.area) || Number.MAX_VALUE),
+                descricao: Like(`%${filtro.descricaoLike || ""}%` || "%%")
+
+            },
             take: take,
             skip: (page-1) * (limit)
         })

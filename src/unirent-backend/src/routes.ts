@@ -10,16 +10,16 @@ export const routes = Router();
 routes.get('/usuario/listar',UsuarioController.listar);
 routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
 routes.post('/usuario/login', UsuarioController.login);//retorna o token
-routes.get('/anuncio/listar',AnuncioController.listar);
-routes.get('/anuncio/listar/:take/:page/:limit',AnuncioController.listarPageable);
 
+routes.get('/anuncio/listarTodos',AnuncioController.listar);
+routes.get('/anuncio/filtrar',AnuncioController.filtrarPageable);
 
 
 export const routesSecurity = Router();
 
 routesSecurity.use(UsuarioController.verificarToken);
 
-routesSecurity.post('/anuncio/cadastrar/:id',AnuncioController.cadastrar);
+routesSecurity.post('/anuncio/cadastrar',AnuncioController.cadastrar);
 
 
 
