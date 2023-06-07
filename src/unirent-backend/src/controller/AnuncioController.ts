@@ -97,7 +97,7 @@ export class AnuncioController{
 
                 if(takeFlag || pageFlag || limitFlag)
                 {
-                    res.status(403);
+                    res.status(400);
                     throw new Error(`valor inválido para take,page ou limit`)
                 }
 
