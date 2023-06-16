@@ -5,6 +5,7 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
+    "database": "database_init.sh",	  
     "start": "nodemon --exec ts-node --esm src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
