@@ -1,1 +1,0 @@
-ssh -i "unirent-pvt-key.pem" ec2-user@54.174.239.75
