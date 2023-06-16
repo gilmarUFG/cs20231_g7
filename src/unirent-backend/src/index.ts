@@ -9,6 +9,7 @@ const app = express();
 
 app.use(
     express.json(),
+
     cors({
         origin: ['https://google.com', 'https://unirent.cloud'],
         methods: ['GET','POST','PUT']

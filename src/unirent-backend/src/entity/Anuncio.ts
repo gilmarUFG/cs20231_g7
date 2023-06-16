@@ -74,6 +74,8 @@ export class Anuncio{
 
 
     withProperties(body: AnuncioDadosIniciais) {
+        let x = body.tipoAluguel;
+
         this.tipoAluguel = body.tipoAluguel;
         this.dataPublicacao = body.dataPublicacao;
         this.tipoImovel = body.tipoImovel;

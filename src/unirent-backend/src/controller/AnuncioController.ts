@@ -51,8 +51,11 @@ export class AnuncioController{
                 throw new Error(`o id recebido nao esta associado a nenhum usuario`);
             }
 
-            //const x = await AnuncioController.bulkCad(req.body.anuncios);
 
+            let {bulkCad} = req.body;
+            if(bulkCad===true){
+            const x = await AnuncioController.bulkCad(req.body.anuncios);
+            }
 
             usuarioDono.anuncios.push(new Anuncio().withProperties(req.body.anuncio));
             await UniRentDataSource.getRepository(Usuario).save(usuarioDono);
