@@ -11,10 +11,7 @@ const app = express();
 app.use(
     express.json(),
     pagination,
-    cors({
-        origin: ['https://google.com', 'https://unirent.cloud'],
-        methods: ['GET','POST','PUT']
-    }),
+    cors(),
     routes,
     routesSecurity
 );
