@@ -91,6 +91,7 @@ RNF006 Design responsivo do sistema web, para que seja possível a sua utilizaç
 ### Local do _Deploy_
   - Amazon RDS
   - Amazon EC2
+  - Amazon CloudFront
 
 ### Cronograma de Desenvolvimento
 
@@ -103,4 +104,6 @@ RNF006 Design responsivo do sistema web, para que seja possível a sua utilizaç
 |5|3º sprint - modelagem, implementação, teste e deploy|17/06/2023|20/05/2023|Vitor Lima|Programada|
 |6|4º sprint - modelagem, implementação, teste e deploy|01/07/2023|21/07/2023|Vitor Lima|Programada| 
 |7|5º sprint - modelagem, implementação, teste e deploy|22/07/2023|11/08/2023|Vitor Lima|Programada|
+
+
 
