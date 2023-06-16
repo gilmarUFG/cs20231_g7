@@ -5,7 +5,7 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "database": "database_init.sh",	  
+    "database": "database_init.sh",
     "start": "nodemon --exec ts-node --esm src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,8 +25,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.3.2",
+    "mysql2": "^3.3.5",
     "nodemon": "^2.0.22",
     "reflect-metadata": "^0.1.13",
     "ssh2": "^1.13.0",
@@ -38,6 +37,6 @@
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
-    "@types/node": "^20.2.5"
+    "@types/node": "^20.3.1"
   }
 }
