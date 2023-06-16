@@ -7,22 +7,32 @@ import { TipoAluguel } from "../enums/TipoAluguel.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Universidade } from "../entity/Universidade.js";
 import { paginate } from "typeorm-pagination/dist/helpers/pagination.js";
+import { TipoImovel } from "../enums/TipoImovel.js";
+import { DadosIniciais } from "./UsuarioController.js";
+import { FindOptionsWhere, LessThanOrEqual, Like } from "typeorm";
 
 export interface AnuncioDadosIniciais{
+    tipoAluguel: TipoAluguel;
+    dataPublicacao: Date;
+    tipoImovel: TipoImovel;
+    quartos: number;
+    area: number;
+    vagasGaragem: number;
+    aceitaAnimais: boolean;
+    valorAlguel: number;
+    valorCondominio: number;
+    valorIPTU: number;
+    comodidades: string[];
     descricao: string;
-
-    titulo: string;
-
-    tipoMoradia: TipoAluguel;
-
-    tamanhoM2: string;
-
-    endereco: string;
 
 
 }
 
+
 const anuncioRepository = UniRentDataSource.getRepository(Anuncio);
+
+
+
 export class AnuncioController{
 
     public static async cadastrar(req: Request, res: Response){
@@ -32,7 +42,7 @@ export class AnuncioController{
                     anuncios: true
                 },
                 where: {
-                    id: Number.parseInt(req.params.id)
+                    id: req.body.usuarioId
                 }
             })
 
@@ -41,7 +51,10 @@ export class AnuncioController{
                 throw new Error(`o id recebido nao esta associado a nenhum usuario`);
             }
 
-            usuarioDono.anuncios.push(new Anuncio().withProperties(req.body));
+            //const x = await AnuncioController.bulkCad(req.body.anuncios);
+
+
+            usuarioDono.anuncios.push(new Anuncio().withProperties(req.body.anuncio));
             await UniRentDataSource.getRepository(Usuario).save(usuarioDono);
             res.sendStatus(200);
 
@@ -50,6 +63,15 @@ export class AnuncioController{
             res.json({ erro: `Erro no cadastro do anúncio. ${err.message }`})
         }
     }
+
+    private static async bulkCad(dadosInicias: AnuncioDadosIniciais[]){
+        dadosInicias.forEach(dados=>{
+             anuncioRepository.save(new Anuncio().withProperties(dados));
+        })
+
+    }
+
+
 
 
     public static async listar(req: Request, res: Response){
@@ -64,13 +86,64 @@ export class AnuncioController{
     }
 
 
-    public static async filtrar(req: Request, res: Response){
+    public static async filtrarPageable(req: Request, res: Response){
+        try {
+            let takeFlag = 0;
+            let pageFlag = 0;
+            let limitFlag = 0;
+            let take = (typeof req.query.take !== 'string') ? takeFlag=1 : Number.parseInt(req.query.take);
+            let page = (typeof req.query.page !== 'string' ) ? pageFlag=1: Number.parseInt(req.query.page);
+            let limit = (typeof req.query.limit !== 'string') ? limitFlag=1: Number.parseInt(req.query.limit);
+
+                if(takeFlag || pageFlag || limitFlag)
+                {
+                    res.status(400);
+                    throw new Error(`valor inválido para take,page ou limit`)
+                }
 
 
 
+            const [result,total] = await AnuncioController.findAllPageable(
+                take,
+                page,
+                limit,
+                req.body
+            );
+
+
+            res.json({
+                anuncios: result,
+                total: total,
+                pagina: page,
+                registros: result.length,
+                limitePorPagina: limit
+            })
+        }catch (err){
+
+            res.json(`Ocorreu um problema na listagem paginável de anuncios: ${err.message}`);
+
+        }
 
     }
 
+    private static async findAllPageable(take: number, page: number, limit: number,filtro: any): Promise<[Anuncio[],number]>{
+
+
+
+        return  anuncioRepository.findAndCount({
+            where:{
+                tipoAluguel: Like(filtro.tipoAluguel || "%%"),
+                valorAluguel: LessThanOrEqual(Number.parseFloat(filtro.valorAluguel) || Number.MAX_VALUE),
+                quartos: LessThanOrEqual(Number.parseInt(filtro.quartos) || Number.MAX_VALUE),
+                area: LessThanOrEqual(Number.parseFloat(filtro.area) || Number.MAX_VALUE),
+                descricao: Like(`%${filtro.descricaoLike || ""}%` || "%%")
+
+            },
+            take: take,
+            skip: (page-1) * (limit)
+        })
+
+    }
 
 
 
