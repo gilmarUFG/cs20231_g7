@@ -8,20 +8,18 @@ export const routes = Router();
 
 
 routes.get('/usuario/listar',UsuarioController.listar);
-
-routes.get('/anuncio/listar',AnuncioController.listar);
-
 routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
-
 routes.post('/usuario/login', UsuarioController.login);//retorna o token
 
+routes.get('/anuncio/listarTodos',AnuncioController.listar);
+routes.post('/anuncio/filtrar',AnuncioController.filtrarPageable);
 
 
 export const routesSecurity = Router();
 
 routesSecurity.use(UsuarioController.verificarToken);
 
-routesSecurity.post('/anuncio/cadastrar/:id',AnuncioController.cadastrar);
+routesSecurity.post('/anuncio/cadastrar',AnuncioController.cadastrar);
 
 
 

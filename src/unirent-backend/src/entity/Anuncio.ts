@@ -19,7 +19,7 @@ export class Anuncio{
     id: string;
 
     @Column({type: 'enum', enum: TipoAluguel, default: TipoAluguel.LOCACAO})
-     tipoMoradia: TipoAluguel;
+     tipoAluguel: TipoAluguel;
 
     @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
     usuario: Usuario;
@@ -42,7 +42,7 @@ export class Anuncio{
     aceitaAnimais: boolean;
 
     @Column('double' )
-    valorAlguel: number;
+    valorAluguel: number;
 
     @Column('double')
     valorCondominio: number;
@@ -64,11 +64,30 @@ export class Anuncio{
 
 
 
+/*
+"tipoAluguel": "",
+        "valorAluguel": ,
+        "tamanho": ,
+        "quartos": ,
+        "descricaoLike": ""
+ */
 
 
     withProperties(body: AnuncioDadosIniciais) {
-        this.descricao = body.descricao;
+        let x = body.tipoAluguel;
 
+        this.tipoAluguel = body.tipoAluguel;
+        this.dataPublicacao = body.dataPublicacao;
+        this.tipoImovel = body.tipoImovel;
+        this.quartos = body.quartos;
+        this.area = body.area;
+        this.vagasGaragem = body.vagasGaragem;
+        this.aceitaAnimais = body.aceitaAnimais;
+        this.valorAluguel = body.valorAlguel;
+        this.valorCondominio = body.valorCondominio;
+        this.valorIPTU = body.valorIPTU;
+        this.comodidades = body.comodidades;
+        this.descricao = body.descricao;
         return this;
     }
 }
