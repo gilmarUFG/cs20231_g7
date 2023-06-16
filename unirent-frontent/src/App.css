@@ -1,0 +1,26 @@
+.entrar {
+
+    border-color: gold;
+    border-radius: 10px;
+    background-color: white;
+    color: gold;
+    height: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+
+
+}
+.list {
+    display: grid;
+    grid-template-columns: 5fr;
+    list-style: none;
+}
+
+.ulist {
+    display: block;
+    list-style-type: decimal;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
