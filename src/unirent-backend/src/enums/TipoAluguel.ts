@@ -1,6 +1,0 @@
-
-export enum TipoAluguel{
-    MORADIA_CONJUNTA = "MORADIA_CONJUNTA",
-    LOCACAO = "LOCACAO",
-    SUBLOCACAO = "SUBLOCACAO"
-}
