@@ -1,32 +1,48 @@
-name: Deploy CI workflow
+name: EC2/RDS AWS CI Workflow
 
 on:
-    push:
-        branches:
-            - "main"
-
+  push:
+    branches: 
+      - main
+    paths:
+      - 'src/*'
+permissions:
+  id-token: write
+  contents: write
 jobs:
-    deploy-frontend:
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ./src/unirent-backend
-        strategy:
-            matrix:
-                node-version: [20.x]
-        steps:
-            - uses: actions/checkout@v2
-            - run: npm install
-            - run: npm run build
-            - run: npm start
-    deploy-backend:
-        runs-on: ubuntu-latest
-        defaults:
-            run:
-                working-directory: ./src/unirent-frontend
+  start-instances:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: ${{ env.IAM_ROLE }}
+        role-session-name: GithubActionsDeploy
+    - name: Start RDS Instance
+      run: |
+        aws rds start-db-instance --db-instance-identifier ${{ env.RDS_INSTANCE_ID }}
+        sleep 300s
+    - name: Check RDS instance status
+      run: |
+        INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ env.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
 
-        steps:
-            - uses: actions/checkout@v2
-            - run: npx build
-            - run: npx start
-    
+        if [ "$INSTANCE_STATUS" != "available" ]; then
+          echo "RDS instance is not open. Stopping the job..."
+          exit 1
+        fi
+    - name: Start EC2 Instance
+      run: |
+        aws ec2 start-instances --instance-ids ${{ env.EC2.INSTACE_ID}}
+        sleep 300s
+    - name: Check EC2 Instance status
+      run: |
+        INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ env.EC2_INSTANCE_ID}} --query 'Reservations[0].Instances[0].State.Name' --output text)
+
+        if [ "$INSTANCE_STATUS" != "running" ]; then
+          echo "EC2 instance is not open. Stopping the job..."
+          exit 1
+        fi
+
