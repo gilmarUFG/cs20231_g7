@@ -62,7 +62,7 @@ jobs:
           npm install @types/node &&
           npm install &&
           cd ${{ env.BACKEND_PATH }} &&
-          echo 'SECRET_KEY=${{ env.SECRET_KEY }}' >> .env &&
+          echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env &&
           echo 'DB_HOST=${{ env.DB_HOST }}' >> .env &&
           echo 'DB_PORT=${{ env.DB_PORT }}' >> .env &&
           echo 'DB_USERNAME={{ env.DB_USERNAME }}' >> .env &&
@@ -75,8 +75,6 @@ jobs:
           cd ${{ env.FRONTEND_PATH }} &&
           # Start frontent
           sleep 1
-              exit 1
-        fi
     - name: Connect, Build and Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
