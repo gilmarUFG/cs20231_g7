@@ -18,16 +18,16 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        aws-region: ${{ env.AWS_REGION }}
-        role-to-assume: ${{ env.IAM_ROLE }}
+        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GithubActionsDeploy
     - name: Start RDS Instance
       run: |
-        aws rds start-db-instance --db-instance-identifier ${{ env.RDS_INSTANCE_ID }}
+        aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
         sleep 240s
     - name: Check RDS instance status
       run: |
-        INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ env.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
+        INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
 
         if [ "$INSTANCE_STATUS" != "available" ]; then
           echo "RDS instance is not open. Stopping the job..."
@@ -35,11 +35,11 @@ jobs:
         fi
     - name: Start EC2 Instance
       run: |
-        aws ec2 start-instances --instance-ids ${{ env.EC2.INSTACE_ID}}
+        aws ec2 start-instances --instance-ids ${{ vars.EC2.INSTACE_ID}}
         sleep 60s
     - name: Check EC2 Instance status
       run: |
-        INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ env.EC2_INSTANCE_ID}} --query 'Reservations[0].Instances[0].State.Name' --output text)
+        INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ vars.EC2_INSTANCE_ID}} --query 'Reservations[0].Instances[0].State.Name' --output text)
 
         if [ "$INSTANCE_STATUS" != "running" ]; then
           echo "EC2 instance is not open. Stopping the job..."
@@ -52,7 +52,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd ${{ env.REPO_PATH }} &&
+          cd ${{ vars.REPO_PATH }} &&
           git checkout main &&
           git fetch --all && 
           git reset --hard HEAD &&
@@ -61,18 +61,18 @@ jobs:
           npm install @types/express &&
           npm install @types/node &&
           npm install &&
-          cd ${{ env.BACKEND_PATH }} &&
+          cd ${{ vars.BACKEND_PATH }} &&
           echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env &&
-          echo 'DB_HOST=${{ env.DB_HOST }}' >> .env &&
-          echo 'DB_PORT=${{ env.DB_PORT }}' >> .env &&
-          echo 'DB_USERNAME={{ env.DB_USERNAME }}' >> .env &&
-          echo 'DB_PASSWORD={{ env.DB_PASSWORD }}' >> .env &&
-          echo 'DB_SCHEMA={{ env.DB_SCHEMA }}' >> .env &&
+          echo 'DB_HOST=${{ vars.DB_HOST }}' >> .env &&
+          echo 'DB_PORT=${{ vars.DB_PORT }}' >> .env &&
+          echo 'DB_USERNAME={{ vars.DB_USERNAME }}' >> .env &&
+          echo 'DB_PASSWORD={{ vars.DB_PASSWORD }}' >> .env &&
+          echo 'DB_SCHEMA={{ vars.DB_SCHEMA }}' >> .env &&
           cat '${{ secrets.SSH_PVT_KEY }}' >> pvt_key.pem &&
           ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
           sleep 15 &&
           npm start &&
-          cd ${{ env.FRONTEND_PATH }} &&
+          cd ${{ vars.FRONTEND_PATH }} &&
           # Start frontent
           sleep 1
     - name: Connect, Build and Deploy to EC2
@@ -82,7 +82,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd ${{ env.REPO_PATH }} &&
+          cd ${{ vars.REPO_PATH }} &&
           git checkout main &&
           git fetch --all && 
           git reset --hard HEAD &&
@@ -91,25 +91,22 @@ jobs:
           npm install @types/express &&
           npm install @types/node &&
           npm install &&
-          cd ${{ env.BACKEND_PATH }} &&
-          echo 'SECRET_KEY=${{ env.SECRET_KEY }}' >> .env &&
-          echo 'DB_HOST=${{ env.DB_HOST }}' >> .env &&
-          echo 'DB_PORT=${{ env.DB_PORT }}' >> .env &&
-          echo 'DB_USERNAME={{ env.DB_USERNAME }}' >> .env &&
-          echo 'DB_PASSWORD={{ env.DB_PASSWORD }}' >> .env &&
-          echo 'DB_SCHEMA={{ env.DB_SCHEMA }}' >> .env &&
+          cd ${{ vars.BACKEND_PATH }} &&
+          echo 'SECRET_KEY=${{ vars.SECRET_KEY }}' >> .env &&
+          echo 'DB_HOST=${{ vars.DB_HOST }}' >> .env &&
+          echo 'DB_PORT=${{ vars.DB_PORT }}' >> .env &&
+          echo 'DB_USERNAME={{ vars.DB_USERNAME }}' >> .env &&
+          echo 'DB_PASSWORD={{ vars.DB_PASSWORD }}' >> .env &&
+          echo 'DB_SCHEMA={{ vars.DB_SCHEMA }}' >> .env &&
           cat '${{ secrets.SSH_PRIVATE_KEY }}' >> pvt_key.pem &&
           ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
           sleep 15 &&
           npm start &&
-          cd ${{ env.FRONTEND_PATH }} &&
+          cd ${{ vars.FRONTEND_PATH }} &&
           # Adicionar start frontend
     - name: Running State
       run: sleep 4h
     - name: Close EC2 Instance
-      run: aws ec2 stop-instances --instance-ids ${{ env.EC2_INSTANCE_ID }}
+      run: aws ec2 stop-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
     - name: Close RDS Instance
-      run: aws rds stop-db-instance --db-instance-identifier ${{ env.RDS_INSTANCE_ID }}
-    
-
-
+      run: aws rds stop-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
