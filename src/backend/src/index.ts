@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import chalk from "chalk";
-import { UniRentDataSource } from "./config/UniRentDataSource.ts";
+import { UniRentDataSource } from "./config/UniRentDataSource.js";
 import { routes, routesSecurity } from "./routes.js";
 import { UsuarioController } from "./controller/UsuarioController.js";
 import cors from 'cors';
@@ -9,11 +9,7 @@ const app = express();
 
 app.use(
     express.json(),
-    cors({
-        origin: ['https://google.com', 'https://unirent.cloud'],
-        methods: ['GET','POST','PUT']
-    }),
-
+    cors(),
     routes,
     routesSecurity
 );
