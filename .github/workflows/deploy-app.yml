@@ -20,7 +20,6 @@ jobs:
       with:
         aws-region: ${{ vars.AWS_REGION }}
         role-to-assume: ${{ vars.IAM_ROLE }}
-        role-session-name: GithubActionsDeploy
     - name: Start RDS Instance
       run: |
         aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
