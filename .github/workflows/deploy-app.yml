@@ -1,0 +1,32 @@
+name: Deploy CI workflow
+
+on:
+    push:
+        branches:
+            - "main"
+
+jobs:
+    deploy-frontend:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./src/unirent-backend
+        strategy:
+            matrix:
+                node-version: [20.x]
+        steps:
+            - uses: actions/checkout@v2
+            - run: npm install
+            - run: npm run build
+            - run: npm start
+    deploy-backend:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./src/unirent-frontend
+
+        steps:
+            - uses: actions/checkout@v2
+            - run: npx build
+            - run: npx start
+    
