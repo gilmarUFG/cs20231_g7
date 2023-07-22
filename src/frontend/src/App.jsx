@@ -107,8 +107,10 @@ function App() {
             <ImagemPredio />
             <div className='ola-mundo'>
               <h1>Encontre imóveis próximos à faculdade</h1>
-              <PesquisaInput />
-              <SelectInput />
+              <div className="lado-a-lado">
+                <PesquisaInput />
+                <SelectInput />
+              </div>
               <input className="pesquisa-input-submit" type="submit" name="Pesquisar" id="pesquisar" value="Pesquisar" />
             </div>
           </div>
