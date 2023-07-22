@@ -1,6 +1,7 @@
 h1 {
     color: purple;
 }
+
 .pesquisa-input-submit {
     border-radius: 4px;
     border-color: blue;
@@ -8,3 +9,51 @@ h1 {
     background-color: blue;
     cursor: pointer;
 }
+
+.tres-coisas-in {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    max-width: 1000px;
+    height: 70%;
+    max-height: 800px;
+    background-color: rgb(243, 233, 233);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.modal-overlay {
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    backdrop-filter: blur(8px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-fechar {
+    border-radius: 15px;
+    padding: 5px;
+    font-size: large;
+    float: right;
+    cursor: pointer;
+  }
+
+  .ola-mundo {
+    padding: 1rem;
+  }
+

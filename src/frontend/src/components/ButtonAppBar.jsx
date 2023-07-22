@@ -1,28 +1,38 @@
 import React from 'react'
 import "./ButtonAppBar.css"
 
-const ButtonAppBar = () => {
+const ButtonAppBar = ({ setAlugarIsOpen, setAnunciarIsOpen, setEntrarIsOpen }) => {
 
-   const handleAlugar = () => {
+    {/* Abrir os modais*/ }
+    const alugarOpen = () => {
+        setAlugarIsOpen(true);
+        setAnunciarIsOpen(false);
+        setEntrarIsOpen(false);
+    }
 
-   }
-   const handleAnunciar = () => {
-    
-   }
-   const handleEntrar = () => {
-    
-   }
+    const anunciarOpen = () => {
+        setAnunciarIsOpen(true);
+        setEntrarIsOpen(false);
+        setAlugarIsOpen(false);
+    }
+
+    const entrarOpen = () => {
+        setEntrarIsOpen(true);
+        setAlugarIsOpen(false);
+        setAnunciarIsOpen(false);
+    }
+
+
 
     return (
         <div >
-
-            <button onClick={handleAlugar} className="container-1">
+            <button onClick={alugarOpen} className="container-1">
                 Alugar
             </button>
-            <button onClick={handleAnunciar} className="container-2">
+            <button onClick={anunciarOpen} className="container-2">
                 Anunciar
             </button>
-            <button onClick={handleEntrar} className="container-3">
+            <button onClick={entrarOpen} className="container-3">
                 ENTRAR
             </button>
         </div>
