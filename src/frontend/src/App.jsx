@@ -11,8 +11,10 @@ import ImagemPredio from './components/ImagemPredio';
 import SelectInput from './components/SelectInput';
 import PesquisaInput from './components/PesquisaInput';
 import ButtonAppBar from './components/ButtonAppBar';
+import FormEntrar from './components/FormEntrar';
 import { useState } from 'react';
 import Modal from 'react-modal';
+
 
 Modal.setAppElement('#root');
 
@@ -21,6 +23,9 @@ function App() {
   const [alugarIsOpen, setAlugarIsOpen] = useState(false);
   const [anunciarIsOpen, setAnunciarIsOpen] = useState(false);
   const [entrarIsOpen, setEntrarIsOpen] = useState(false);
+
+  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('');
 
   {/* Fechar os modais*/ }
 
@@ -71,7 +76,7 @@ function App() {
               onRequestClose={alugarClose}
               contentLabel='Alugar'
               overlayClassName='modal-overlay'
-              className='modal-content'
+              className='modal-content-alugar'
             >
               <h2>Alugar</h2>
               <button className='button-fechar' onClick={alugarClose}>x</button>
@@ -82,7 +87,7 @@ function App() {
               onRequestClose={anunciarClose}
               contentLabel='Alugar'
               overlayClassName='modal-overlay'
-              className='modal-content'
+              className='modal-content-anunciar'
             >
               <h2>Anunciar</h2>
               <button className='button-fechar' onClick={anunciarClose}>x</button>
@@ -93,10 +98,18 @@ function App() {
               onRequestClose={entrarClose}
               contentLabel='Alugar'
               overlayClassName='modal-overlay'
-              className='modal-content'
+              className='modal-content-entrar'
             >
-              <h2>Entrar</h2>
-              <button className='button-fechar' onClick={entrarClose}>x</button>
+                
+                <div>
+                  <button className='button-fechar' onClick={entrarClose}>x</button>
+                </div>
+                <div>
+                <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+                </div>
+                <div>
+                  <FormEntrar setEmail={setEmail} setSenha={setSenha}/>
+                </div>
             </Modal>
           </Box>
         </Toolbar>
