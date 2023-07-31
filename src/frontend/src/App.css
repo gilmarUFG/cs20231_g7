@@ -9,7 +9,9 @@ h1 {
     background-color: blue;
     cursor: pointer;
 }
-
+ .img-logo {
+    margin-left: 40px;
+ }
 
 
 .modal-content {

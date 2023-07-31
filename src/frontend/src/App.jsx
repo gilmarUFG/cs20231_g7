@@ -61,7 +61,7 @@ function App() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <img src="./logologo.svg" alt="Logo UniRent" />
+            <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
           </Typography>
           <Box >
             <ButtonAppBar setAlugarIsOpen={setAlugarIsOpen} setAnunciarIsOpen={setAnunciarIsOpen} setEntrarIsOpen={setEntrarIsOpen} />
