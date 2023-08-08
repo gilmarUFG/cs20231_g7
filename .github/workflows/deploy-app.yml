@@ -25,7 +25,7 @@ jobs:
     - name: Start RDS Instance
       run: |
         aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
-        sleep 240s
+        sleep 310s
     - name: Check RDS instance status
       run: |
         INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
@@ -37,7 +37,7 @@ jobs:
     - name: Start EC2 Instance
       run: |
         aws ec2 start-instances --instance-ids ${{ vars.EC2.INSTACE_ID}}
-        sleep 60s
+        sleep 90s
     - name: Check EC2 Instance status
       run: |
         INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ vars.EC2_INSTANCE_ID}} --query 'Reservations[0].Instances[0].State.Name' --output text)
