@@ -17,7 +17,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1.7.0
+      uses: aws-actions/configure-aws-credentials@master
       with:
         role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GithubActionsOIDC
