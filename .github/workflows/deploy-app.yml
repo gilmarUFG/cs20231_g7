@@ -1,6 +1,7 @@
 name: EC2/RDS AWS Deploy Workflow
 
 on:
+  workflow_dispatch:
   push:
     branches: 
       - main
