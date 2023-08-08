@@ -74,6 +74,9 @@ jobs:
           sleep 15 &&
           npm start &&
           cd ${{ vars.FRONTEND_PATH }} &&
+          npm install &&
+          npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
+          npm run dev
           # Start frontent
           sleep 1
     - name: Connect, Build and Deploy to EC2
