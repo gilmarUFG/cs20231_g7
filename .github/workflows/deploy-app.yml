@@ -79,35 +79,6 @@ jobs:
           npm run dev
           # Start frontent
           sleep 1
-    - name: Connect, Build and Deploy to EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_PUBLIC_IP }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd ${{ vars.REPO_PATH }} &&
-          git checkout main &&
-          git fetch --all && 
-          git reset --hard HEAD &&
-          git pull origin main &&
-          git clean -f &&
-          npm install @types/express &&
-          npm install @types/node &&
-          npm install &&
-          cd ${{ vars.BACKEND_PATH }} &&
-          echo 'SECRET_KEY=${{ vars.SECRET_KEY }}' >> .env &&
-          echo 'DB_HOST=${{ vars.DB_HOST }}' >> .env &&
-          echo 'DB_PORT=${{ vars.DB_PORT }}' >> .env &&
-          echo 'DB_USERNAME={{ vars.DB_USERNAME }}' >> .env &&
-          echo 'DB_PASSWORD={{ vars.DB_PASSWORD }}' >> .env &&
-          echo 'DB_SCHEMA={{ vars.DB_SCHEMA }}' >> .env &&
-          cat '${{ secrets.SSH_PRIVATE_KEY }}' >> pvt_key.pem &&
-          ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
-          sleep 15 &&
-          npm start &&
-          cd ${{ vars.FRONTEND_PATH }} &&
-          # Adicionar start frontend
     - name: Running State
       run: sleep 4h
     - name: Close EC2 Instance
