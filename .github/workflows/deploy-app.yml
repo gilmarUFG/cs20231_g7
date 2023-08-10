@@ -11,40 +11,48 @@ permissions:
   id-token: write
   contents: read
 jobs:
-  deploy:
+  deploy-production:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+    - name: Build React App
+      run: |
+        cd ${{ vars.FRONTEND_PATH }} &&
+        npm install &&
+        npm install @mui/material @emotion/react @emotion/styled @mui/icons-material &&
+        npm run build
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@master
       with:
         role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GithubActionsOIDC
         aws-region: ${{ vars.AWS_REGION }}
+    - name: Deploy to S3
+      run: |
+        echo $PWD &&
+        aws s3 sync ./dist/ s3://${{ vars.S3_BUCKET_NAME }} --delete
     - name: Start RDS Instance
       run: |
-        aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
-        sleep 310s
-    - name: Check RDS instance status
-      run: |
-        INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
-
-        if [ "$INSTANCE_STATUS" != "available" ]; then
-          echo "RDS instance is not open. Stopping the job..."
-          exit 1
+       INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
+        if [ "$INSTANCE_STATUS" = "available" ]; then
+          aws rds reboot-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
+        else
+          aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
+        sleep 330
         fi
     - name: Start EC2 Instance
       run: |
-        aws ec2 start-instances --instance-ids ${{ vars.EC2.INSTACE_ID}}
-        sleep 90s
-    - name: Check EC2 Instance status
-      run: |
-        INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ vars.EC2_INSTANCE_ID}} --query 'Reservations[0].Instances[0].State.Name' --output text)
-
-        if [ "$INSTANCE_STATUS" != "running" ]; then
-          echo "EC2 instance is not open. Stopping the job..."
-          exit 1
+        INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }} --query 'Reservations[0].Instances[0].State.Name' --output text)
+        if [ "$INSTANCE_STATUS" = "running" ]; then
+          aws ec2 reboot-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
+        else
+          aws ec2 start-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
+        sleep 90
         fi
     - name: Connect, Build and Deploy to EC2
       uses: appleboy/ssh-action@master
@@ -71,14 +79,8 @@ jobs:
           echo 'DB_SCHEMA={{ vars.DB_SCHEMA }}' >> .env &&
           cat '${{ secrets.SSH_PVT_KEY }}' >> pvt_key.pem &&
           ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
-          sleep 15 &&
+          sleep 12 &&
           npm start &&
-          cd ${{ vars.FRONTEND_PATH }} &&
-          npm install &&
-          npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
-          npm run dev
-          # Start frontent
-          sleep 1
     - name: Running State
       run: sleep 4h
     - name: Close EC2 Instance
