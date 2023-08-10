@@ -42,8 +42,8 @@ jobs:
           aws rds reboot-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
         else
           aws rds start-db-instance --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }}
+        fi &&
         sleep 330
-        fi
     - name: Start EC2 Instance
       run: |
         INSTANCE_STATUS=$(aws ec2 describe-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }} --query 'Reservations[0].Instances[0].State.Name' --output text)
@@ -51,8 +51,8 @@ jobs:
           aws ec2 reboot-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
         else
           aws ec2 start-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
+        fi &&
         sleep 90
-        fi
     - name: Connect, Build and Deploy to EC2
       uses: appleboy/ssh-action@master
       with:
