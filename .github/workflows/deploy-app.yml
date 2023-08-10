@@ -22,7 +22,6 @@ jobs:
         node-version: "18"
     - name: Build React App
       run: |
-        echo $PWD &&
         cd ${{ vars.FRONTEND_PATH }} &&
         npm install &&
         npm install @mui/material @emotion/react @emotion/styled @mui/icons-material &&
@@ -35,8 +34,7 @@ jobs:
         aws-region: ${{ vars.AWS_REGION }}
     - name: Deploy to S3
       run: |
-        echo $PWD &&
-        aws s3 sync ./dist/ s3://${{ vars.S3_BUCKET_NAME }} --delete
+        aws s3 sync ${{ vars.FRONTEND_PATH }}/dist/ s3://${{ vars.S3_BUCKET_NAME }} --delete
     - name: Start RDS Instance
       run: |
        INSTANCE_STATUS=$(aws rds describe-db-instances --db-instance-identifier ${{ vars.RDS_INSTANCE_ID }} --query 'DBInstances[0].DBInstanceStatus' --output text)
