@@ -79,7 +79,7 @@ jobs:
           cat '${{ secrets.SSH_PRIVATE_KEY }}' >> pvt_key.pem &&
           ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
           sleep 12 &&
-          npm start &&
+          npm start
     - name: Running State
       run: sleep 4h
     - name: Close EC2 Instance
