@@ -22,8 +22,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
+        uses: docker/build-push-action@v4
         with:
           context: ${{ vars.BACKEND_PATH }}
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest
+    
