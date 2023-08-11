@@ -81,7 +81,7 @@ jobs:
           echo 'DB_SCHEMA=${{ vars.DB_SCHEMA }}' >> .env &&
           echo '${{ secrets.SSH_PRIVATE_KEY }}' >> pvt_key.pem &&
           sudo chmod 400 pvt_key.pem &&
-          ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@54.174.239.75 &&
+          ssh -i "pv_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@${{ secrets.EC2_PUBLIC_IP }} &&
           sleep 12 &&
           npm start
     - name: Running State
