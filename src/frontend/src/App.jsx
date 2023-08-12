@@ -7,13 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import ImagemPredio from './components/ImagemPredio';
-import SelectInput from './components/SelectInput';
-import PesquisaInput from './components/PesquisaInput';
 import ButtonAppBar from './components/ButtonAppBar';
 import FormEntrar from './components/FormEntrar';
 import { useState } from 'react';
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
+
+import {Outlet} from 'react-router-dom'
+
 
 
 Modal.setAppElement('#root');
@@ -66,7 +67,7 @@ function App() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+            <Link to='/'><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
           </Typography>
           <Box >
             <ButtonAppBar setAlugarIsOpen={setAlugarIsOpen} setAnunciarIsOpen={setAnunciarIsOpen} setEntrarIsOpen={setEntrarIsOpen} />
@@ -115,20 +116,10 @@ function App() {
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }}>
+        <Toolbar />
         <Toolbar>
-          <div className="tres-coisas-in">
-            <ImagemPredio />
-            <div className='ola-mundo'>
-              <h1>Encontre imóveis próximos à faculdade</h1>
-              <div className="lado-a-lado">
-                <PesquisaInput />
-                <SelectInput />
-              </div>
-              <input className="pesquisa-input-submit" type="submit" name="Pesquisar" id="pesquisar" value="Pesquisar" />
-            </div>
-          </div>
+          <Outlet />
         </Toolbar>
-
       </Box>
     </Box>
   );
