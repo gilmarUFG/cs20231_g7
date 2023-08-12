@@ -64,6 +64,7 @@ jobs:
         command_timeout: 30m
         script: |
           sudo rm * -rf &&
+          rm .env &&
           echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env &&
           echo 'DB_HOST=${{ vars.DB_HOST }}' >> .env &&
           echo 'DB_PORT=${{ vars.DB_PORT }}' >> .env &&
