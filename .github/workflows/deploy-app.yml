@@ -75,7 +75,7 @@ jobs:
           ssh -i pvt_key.pem -o StrictHostKeyChecking=no -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@${{ secrets.EC2_PUBLIC_IP }} &&
           sleep 10 &&
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest &&
-          docker run -d -p ${{ vars.DB_PORT }}:${{ vars.DB_PORT }} -p ${{ vars.AWS_LB_PORT }}:${{ vars.AWS_LB_PORT }} --env-file .env ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest
+          docker run -d -p ${{ vars.AWS_LB_PORT }}:${{ vars.AWS_LB_PORT }} --env-file .env ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest
     - name: Running State
       run: sleep 4h
     - name: Close EC2 Instance
