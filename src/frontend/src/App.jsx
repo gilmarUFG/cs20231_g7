@@ -21,22 +21,12 @@ Modal.setAppElement('#root');
 
 function App() {
 
-  const [alugarIsOpen, setAlugarIsOpen] = useState(false);
-  const [anunciarIsOpen, setAnunciarIsOpen] = useState(false);
   const [entrarIsOpen, setEntrarIsOpen] = useState(false);
 
   const [senha, setSenha] = useState('');
   const [email, setEmail] = useState('');
 
   {/* Fechar os modais*/ }
-
-  const alugarClose = () => {
-    setAlugarIsOpen(false);
-  }
-
-  const anunciarClose = () => {
-    setAnunciarIsOpen(false);
-  }
 
   const entrarClose = () => {
     setEntrarIsOpen(false);
@@ -67,32 +57,13 @@ function App() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <Link to='/'><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
+
+          <Link to='/' onClick={entrarClose}><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
+          
           </Typography>
           <Box >
-            <ButtonAppBar setAlugarIsOpen={setAlugarIsOpen} setAnunciarIsOpen={setAnunciarIsOpen} setEntrarIsOpen={setEntrarIsOpen} />
 
-            <Modal
-              isOpen={alugarIsOpen}
-              onRequestClose={alugarClose}
-              contentLabel='Alugar'
-              overlayClassName='modal-overlay'
-              className='modal-content-alugar'
-            >
-              <h2>Alugar</h2>
-              <button className='button-fechar' onClick={alugarClose}>x</button>
-            </Modal>
-
-            <Modal
-              isOpen={anunciarIsOpen}
-              onRequestClose={anunciarClose}
-              contentLabel='Alugar'
-              overlayClassName='modal-overlay'
-              className='modal-content-anunciar'
-            >
-              <h2>Anunciar</h2>
-              <button className='button-fechar' onClick={anunciarClose}>x</button>
-            </Modal>
+            <ButtonAppBar setEntrarIsOpen={setEntrarIsOpen} />
 
             <Modal
               isOpen={entrarIsOpen}
@@ -101,7 +72,6 @@ function App() {
               overlayClassName='modal-overlay'
               className='modal-content-entrar'
             >
-                
                 <div>
                   <button className='button-fechar' onClick={entrarClose}>x</button>
                 </div>
@@ -112,6 +82,7 @@ function App() {
                   <FormEntrar setEmail={setEmail} setSenha={setSenha}/>
                 </div>
             </Modal>
+
           </Box>
         </Toolbar>
       </AppBar>

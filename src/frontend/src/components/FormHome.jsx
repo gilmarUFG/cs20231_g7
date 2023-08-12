@@ -14,7 +14,7 @@ const FormHome = () => {
     const handleSubmit =  (event) => {
 
         event.preventDefault();
-        setTipoMoradia('');
+
         setPesquisar('');
     }
     return (

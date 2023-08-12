@@ -20,7 +20,7 @@ const Home = () => {
       <div>
         <div className='ver-anuncios'>
           <h3>Anúncios Recentes</h3>
-          <Link to='/Anuciar'>Ver mais</Link>
+          <Link to="/alugar">Ver mais</Link>
         </div>
       </div>
     </div>
