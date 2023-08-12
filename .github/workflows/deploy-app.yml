@@ -56,11 +56,12 @@ jobs:
           sleep 90
         fi 
     - name: Connect and Build 
-      uses: appleboy/ssh-action@v1.0.0
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_PUBLIC_IP }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        command_timeout: 30m
         script: |
           sudo rm * -rf &&
           echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env &&
