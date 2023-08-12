@@ -62,6 +62,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          sudo rm * -rf &&
           echo 'SECRET_KEY=${{ secrets.SECRET_KEY }}' >> .env &&
           echo 'DB_HOST=${{ vars.DB_HOST }}' >> .env &&
           echo 'DB_PORT=${{ vars.DB_PORT }}' >> .env &&
@@ -70,7 +71,7 @@ jobs:
           echo 'DB_SCHEMA=${{ vars.DB_SCHEMA }}' >> .env &&
           echo '${{ secrets.SSH_PRIVATE_KEY }}' >> pvt_key.pem &&
           sudo chmod 400 pvt_key.pem &&
-          ssh -i "pvt_key.pem" -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@${{ secrets.EC2_PUBLIC_IP }} &&
+          ssh -i pvt_key.pem -f -N -L 3310:${{ secrets.RDS_ENDPOINT }}:3306 ec2-user@${{ secrets.EC2_PUBLIC_IP }} &&
           sleep 10 &&
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest &&
           docker run -d -p ${{ vars.DB_PORT }}:${{ vars.DB_PORT }} -p ${{ vars.AWS_LB_PORT }}:${{ vars.AWS_LB_PORT }} --env-file .env ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest
