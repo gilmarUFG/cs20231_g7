@@ -1,4 +1,4 @@
-name: EC2/RDS AWS Deploy Workflow
+name: AWS FUll Deploy
 
 on:
   workflow_dispatch:
