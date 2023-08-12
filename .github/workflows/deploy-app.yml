@@ -27,7 +27,7 @@ jobs:
         npm install @mui/material @emotion/react @emotion/styled @mui/icons-material &&
         npm run build
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@master
+      uses: aws-actions/configure-aws-credentials@v1.0.0
       with:
         role-to-assume: ${{ vars.IAM_ROLE }}
         role-session-name: GithubActionsOIDC
