@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 COPY . /app
 
-RUN npm install @types/express @types/node
 RUN npm install
+RUN npm install @types/express @types/node
 
 CMD ["npm", "start"]
