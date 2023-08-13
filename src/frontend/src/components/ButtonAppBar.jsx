@@ -2,16 +2,18 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import "./ButtonAppBar.css"
 
-const ButtonAppBar = ({setEntrarIsOpen }) => {
+const ButtonAppBar = ({ setCadastrarIsOpen, setEntrarIsOpen }) => {
 
     {/* Abrir os modais*/ }
 
     const handleOpen = () => {
         setEntrarIsOpen(false);
+        setCadastrarIsOpen(false);
     }
 
     const entrarOpen = () => {
         setEntrarIsOpen(true);
+        setCadastrarIsOpen(false);
 
     }
 

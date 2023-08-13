@@ -13,7 +13,9 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 
-import {Outlet} from 'react-router-dom'
+import { Outlet } from 'react-router-dom';
+
+import FormCadastro from './components/FormCadastro';
 
 
 
@@ -22,48 +24,45 @@ Modal.setAppElement('#root');
 function App() {
 
   const [entrarIsOpen, setEntrarIsOpen] = useState(false);
-
-  const [senha, setSenha] = useState('');
-  const [email, setEmail] = useState('');
-
+  const [cadastrarIsOpen, setCadastrarIsOpen] = useState(false);
   {/* Fechar os modais*/ }
+
 
   const entrarClose = () => {
     setEntrarIsOpen(false);
   }
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
+  const entrarOpen = () => {
+    setEntrarIsOpen(true);
+    setCadastrarIsOpen(false);
+  }
 
+  const cadastrarClose = () => {
+    setCadastrarIsOpen(false);
+  }
 
-
+  const cadastrarOpen = () => {
+    setCadastrarIsOpen(true);
+    setEntrarIsOpen(false);
+  }
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar className='barra-nav' component="nav" color="default">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
 
-          <Link to='/' onClick={entrarClose}><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
-          
+            <Link to='/' onClick={entrarClose}><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
+
           </Typography>
           <Box >
 
-            <ButtonAppBar setEntrarIsOpen={setEntrarIsOpen} />
+            <ButtonAppBar setCadastrarIsOpen={setCadastrarIsOpen} setEntrarIsOpen={setEntrarIsOpen} />
 
             <Modal
               isOpen={entrarIsOpen}
@@ -72,15 +71,46 @@ function App() {
               overlayClassName='modal-overlay'
               className='modal-content-entrar'
             >
+              <div>
+                <button className='button-fechar' onClick={entrarClose}> x </button>
+              </div>
+              <div className='div-modal-entrar'>
                 <div>
-                  <button className='button-fechar' onClick={entrarClose}>x</button>
+                  <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
                 </div>
                 <div>
-                <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+                  <FormEntrar entrarClose={entrarClose}/>
                 </div>
+                <h5>Ou</h5>
                 <div>
-                  <FormEntrar setEmail={setEmail} setSenha={setSenha}/>
+                  <Link onClick={cadastrarOpen}>Cadastre-se aqui</Link>
                 </div>
+              </div>
+            </Modal>
+            <Modal
+              isOpen={cadastrarIsOpen}
+              onRequestClose={cadastrarClose}
+              contentLabel='Cadastro'
+              overlayClassName='modal-overlay'
+              className='modal-content-cadastrar'
+            >
+              <div>
+                <button className='button-fechar' onClick={cadastrarClose}> x </button>
+              </div>
+              <div>
+                <div className='div-modal-entrar'>
+                  <div>
+                    <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+                  </div>
+                  <div>
+                    <FormCadastro entrarOpen={entrarOpen} />
+                  </div>
+                  <h5>Ou</h5>
+                  <div>
+                    <Link onClick={entrarOpen}>Entre aqui</Link>
+                  </div>
+                </div>
+              </div>
             </Modal>
 
           </Box>

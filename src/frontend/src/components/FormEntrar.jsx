@@ -1,11 +1,20 @@
 
 import './FormEntrar.css';
-import * as React from 'react';
+import {useState} from 'react'
 
-export default function FormEntrar({ setSenha, setEmail }) {
+export default function FormEntrar({ entrarClose }) {
+
+    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+
+
+
+
+        entrarClose();
     }
 
     return (
@@ -16,8 +25,7 @@ export default function FormEntrar({ setSenha, setEmail }) {
                     <input
                         type="email"
                         name='name'
-                        placeholder="Digite o seu e-mail"
-                        onChange={(e) => (setEmail(e.target.value))}
+                        onChange={(event) => (setEmail(event.target.value))}
                     />
                 </label>
                 <label className='form-entrar'>
@@ -25,11 +33,10 @@ export default function FormEntrar({ setSenha, setEmail }) {
                     <input
                         type="password"
                         name='password'
-                        placeholder="Digite sua senha"
-                        onChange={(e) => (setSenha(e.target.value))}
+                        onChange={(event) => (setSenha(event.target.value))}
                     />
                 </label>
-                <input type="submit" value="Enviar" />
+                <input type="submit" value="Entrar" />
             </form>
         </>
     );

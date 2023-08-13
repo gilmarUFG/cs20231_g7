@@ -1,14 +1,14 @@
-import React from 'react'
 import { useState } from 'react';
-
 import './FormHome.css'
 
 const FormHome = () => {
+    
     const [pesquisar, setPesquisar] = useState('');
     const [tipoMoradia, setTipoMoradia] = useState('');
 
     const handleChange = (event) => {
         setTipoMoradia(event.target.value);
+
     };
 
     const handleSubmit =  (event) => {
@@ -17,6 +17,7 @@ const FormHome = () => {
 
         setPesquisar('');
     }
+    
     return (
         <div>
             <form onSubmit={handleSubmit}>

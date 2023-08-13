@@ -29,9 +29,23 @@
   border-radius: 5px;
 }
 .modal-content-entrar {
+  width: 35%;
+  max-width: 400px;
+  height: 70%;
+  max-height: 600px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #DCDCDC;
+}
+.div-modal-entrar{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+.modal-content-cadastrar {
   width: 35%;
   max-width: 400px;
   height: 70%;
@@ -63,7 +77,7 @@
   color: whitesmoke;
   background-color: #808080;
   border-radius: 100%;
-  font-size: medium;
+  font-size: large;
   float: right;
   cursor: pointer;
 }
