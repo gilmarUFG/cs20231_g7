@@ -1,30 +1,29 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import "./ButtonAppBar.css"
 
-const ButtonAppBar = () => {
+const ButtonAppBar = ({ setCadastrarIsOpen, setEntrarIsOpen }) => {
 
-   const handleAlugar = () => {
+    {/* Abrir os modais*/ }
 
-   }
-   const handleAnunciar = () => {
-    
-   }
-   const handleEntrar = () => {
-    
-   }
+    const handleOpen = () => {
+        setEntrarIsOpen(false);
+        setCadastrarIsOpen(false);
+    }
+
+    const entrarOpen = () => {
+        setEntrarIsOpen(true);
+        setCadastrarIsOpen(false);
+
+    }
+
+
 
     return (
         <div >
-
-            <button onClick={handleAlugar} className="container-1">
-                Alugar
-            </button>
-            <button onClick={handleAnunciar} className="container-2">
-                Anunciar
-            </button>
-            <button onClick={handleEntrar} className="container-3">
-                ENTRAR
-            </button>
+            <Link to="/alugar" onClick={handleOpen}><button className='container-1'>Alugar</button></Link>
+            <Link to="/anunciar" onClick={handleOpen}><button className="container-2">Anunciar</button></Link>
+            <button onClick={entrarOpen} className="container-3">ENTRAR</button>
         </div>
     )
 }

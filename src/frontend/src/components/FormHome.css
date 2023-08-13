@@ -1,0 +1,40 @@
+.pesquisa-select-submit {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.pesquisa-style {
+  text-align: center;
+  color: black;
+  font-size: 24px;
+  width: 600px;
+  padding: 10px 5px 5px;
+  background-color: white;
+  border-color: 	#d1d0d0;
+  border-radius: 6px;
+}
+
+.select-style {
+    margin-top: 30px;
+    margin-right: 4px;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    width: 75%;
+    padding: 8px 5px 5px;
+    background-color: white;
+    border-color: 	#808080;
+    border-radius: 4px;
+}
+
+.submit-style {
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  width: 20%;
+  padding: 5px 5px 5px 2px;
+  background-color: blue;
+  border-color: 	#d1d0d0;
+  border-radius: 6px;
+}
