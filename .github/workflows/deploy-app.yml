@@ -80,7 +80,7 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest &&
           docker run -d -p ${{ vars.AWS_LB_PORT }}:${{ vars.AWS_LB_PORT }} --env-file .env --network="host" ${{ secrets.DOCKERHUB_USERNAME }}/unirent:latest
     - name: Running State
-      run: sleep 4h
+      run: sleep 2h
     - name: Close EC2 Instance
       run: aws ec2 stop-instances --instance-ids ${{ vars.EC2_INSTANCE_ID }}
     - name: Close RDS Instance
