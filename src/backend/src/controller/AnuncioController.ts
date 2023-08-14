@@ -83,6 +83,35 @@ export class AnuncioController {
         }
     }
 
+    public static async deletarAnuncio(req: Request, res: Response){
+
+        try{
+            const {idAnuncio} = req.body;
+
+            await UniRentDataSource.createQueryBuilder()
+                .delete()
+                .from(LocalPreview)
+                .where(`anuncioId=${idAnuncio}`)
+                .execute();
+
+            await UniRentDataSource.
+                createQueryBuilder()
+                .delete()
+                .from(`lista_de_interesse`)
+                .where(`anuncioId=${idAnuncio}`)
+                .execute();
+
+            await anuncioRepository.delete({id : idAnuncio});
+
+
+            res.status(200).send('DELETADO');
+        }catch (err){
+
+         res.status(500).send(err.message);
+        }
+
+    }
+
 
 
     public static async detalharAnuncioLogado(req: Request, res: Response){

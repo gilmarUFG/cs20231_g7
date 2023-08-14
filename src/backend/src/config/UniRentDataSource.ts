@@ -12,7 +12,7 @@ export const UniRentDataSource = new DataSource({
     password: Environment.DB_PASSWORD,
     database: "unirent",
     synchronize: true, // true para o banco seguir o seu projeto | false para o seu projeto não mexer com ALTER TABLE
-    logging: false,
+    logging: true,
     entities: [Usuario,Anuncio, LocalPreview],
     migrations: [],
     subscribers: [],

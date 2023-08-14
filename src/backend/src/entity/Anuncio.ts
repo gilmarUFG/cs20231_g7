@@ -70,6 +70,7 @@ export class Anuncio{
     @Column('simple-array')
     comodidades: string[];
 
+
     @Column()
     descricao: string;
 
@@ -87,7 +88,7 @@ export class Anuncio{
     universidadesProximas : string[]
 
     @OneToMany(()=>LocalPreview, localPreview=>localPreview.anuncio, {
-        cascade: true
+        cascade: true,
     })
     localPreviews: LocalPreview[];
 

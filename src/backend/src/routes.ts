@@ -24,6 +24,7 @@ routes.post('/anuncio/filtrar', AnuncioController.filtrarPageable);
 /*----------*/
 routesSecurity.post('/anuncio/detalharLogado', AnuncioController.detalharAnuncioLogado);
 routesSecurity.post('/anuncio/cadastrar', AnuncioController.cadastrar);
+routesSecurity.delete('/anuncio/deletar',AnuncioController.deletarAnuncio)
 
 /*******ANUNCIO********/
 
