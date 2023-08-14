@@ -2,16 +2,13 @@ import { Request, Response } from "express";
 import { Usuario } from "../entity/Usuario.js";
 import { UniRentDataSource } from "../config/UniRentDataSource.js";
 import { Anuncio } from "../entity/Anuncio.js";
-import chalk from "chalk";
 import { TipoAluguel } from "../enums/TipoAluguel.js";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { Universidade } from "../entity/Universidade.js";
-import { paginate } from "typeorm-pagination/dist/helpers/pagination.js";
 import { TipoImovel } from "../enums/TipoImovel.js";
-import { DadosIniciais } from "./UsuarioController.js";
-import { FindOptionsWhere, LessThanOrEqual, Like } from "typeorm";
+import {  LessThanOrEqual, Like } from "typeorm";
+import { LocalPreview } from "../entity/LocalPreview.js";
 
 export interface AnuncioDadosIniciais {
+    localizacaoGoogleMaps: string;
     tipoAluguel: TipoAluguel;
     dataPublicacao: Date;
     tipoImovel: TipoImovel;
@@ -25,19 +22,34 @@ export interface AnuncioDadosIniciais {
     comodidades: string[];
     descricao: string;
 
+    imagens : string[];
+
+    universidadesProximas: string[];
 
 }
 
 
 const anuncioRepository = UniRentDataSource.getRepository(Anuncio);
 
-
+async function conseguirAnuncio(idAnuncio: string,uniPresent: boolean, interessadosPresent: boolean, previewPresent: boolean): Promise<Anuncio>{
+    const anuncio: Promise<Anuncio> = UniRentDataSource.getRepository(Anuncio)
+        .findOne({
+            relations : {
+                interessados : interessadosPresent,
+                localPreviews : previewPresent
+            },
+            where : {
+                id : Number.parseInt(idAnuncio)
+            }
+        })
+    return anuncio;
+}
 
 export class AnuncioController {
 
     public static async cadastrar(req: Request, res: Response) {
         try {
-            const usuarioDono: Usuario = await UniRentDataSource.getRepository(Usuario).findOne({
+            const user: Usuario = await UniRentDataSource.getRepository(Usuario).findOne({
                 relations: {
                     anuncios: true
                 },
@@ -46,33 +58,94 @@ export class AnuncioController {
                 }
             })
 
-            if (usuarioDono == null) {
+            const anuncioDados: AnuncioDadosIniciais = req.body.anuncio;
+            if (user == null) {
                 res.status(500);
                 throw new Error(`o id recebido nao esta associado a nenhum usuario`);
             }
 
+            let anuncio = new Anuncio().withProperties(anuncioDados);
 
-            let { bulkCad } = req.body;
-            if (bulkCad === true) {
-                const x = await AnuncioController.bulkCad(req.body.anuncios);
-            }
+            console.log(anuncioDados)
 
-            usuarioDono.anuncios.push(new Anuncio().withProperties(req.body.anuncio));
-            await UniRentDataSource.getRepository(Usuario).save(usuarioDono);
+            const localPreviews = anuncioDados.imagens.map(imagem=>{
+                return new LocalPreview(imagem,anuncio);
+            })
+
+            anuncio.localPreviews=localPreviews;
+            user.anuncios.push(anuncio);
+
+            await UniRentDataSource.getRepository(Usuario).save(user);
             res.sendStatus(200);
-
         } catch (err) {
 
             res.json({ erro: `Erro no cadastro do anúncio. ${err.message}` })
         }
     }
 
-    private static async bulkCad(dadosInicias: AnuncioDadosIniciais[]) {
-        dadosInicias.forEach(dados => {
-            anuncioRepository.save(new Anuncio().withProperties(dados));
-        })
+    public static async deletarAnuncio(req: Request, res: Response){
+
+        try{
+            const {idAnuncio} = req.body;
+
+            await UniRentDataSource.createQueryBuilder()
+                .delete()
+                .from(LocalPreview)
+                .where(`anuncioId=${idAnuncio}`)
+                .execute();
+
+            await UniRentDataSource.
+                createQueryBuilder()
+                .delete()
+                .from(`lista_de_interesse`)
+                .where(`anuncioId=${idAnuncio}`)
+                .execute();
+
+            await anuncioRepository.delete({id : idAnuncio});
+
+
+            res.status(200).send('DELETADO');
+        }catch (err){
+
+         res.status(500).send(err.message);
+        }
 
     }
+
+
+
+    public static async detalharAnuncioLogado(req: Request, res: Response){
+        try{
+            const {idAnuncio} = req.body;
+            if(!idAnuncio) throw new Error(`ID inválido! Ele está vazio`);
+
+            let anuncio = await conseguirAnuncio(idAnuncio, true, true, true);
+
+            anuncio.interessados = anuncio.interessados.map(interessado=>{
+                let seguro = interessado;
+                 seguro.senha= '***';
+                 return seguro;
+            })
+
+           res.send(anuncio);
+        }catch (err){
+            res.status(500).send(`Erro na busca do anúncio. ${err.message}`)
+        }
+    }
+
+    public static async detalharAnuncioDeslogado(req: Request, res: Response){
+        try{
+            const {idAnuncio} = req.body;
+            if(!idAnuncio) throw new Error(`ID inválido! Ele está vazio`);
+
+            const anuncio = await conseguirAnuncio(idAnuncio, true, false, true);
+            res.send(anuncio);
+        }catch (err){
+            res.status(500).send(`Erro na busca do anúncio. ${err.message}`)
+        }
+
+    }
+
 
 
 

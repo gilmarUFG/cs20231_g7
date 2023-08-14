@@ -7,6 +7,7 @@ import chalk from "chalk";
 
 
 export interface DadosIniciais {
+    fotoDePerfil: string;
     email: string;
     senha: string;
     nome: string;
@@ -23,6 +24,26 @@ const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
 
 
 export class UsuarioController {
+    static async seInteresar(req: Request, res: Response) {
+        try{
+            const {anuncioId} = req.body;
+            const {usuarioId} = req.body;
+
+            await UniRentDataSource.createQueryBuilder().
+                insert()
+                .into("lista_de_interesse")
+                .values([
+                    {anuncioId : anuncioId , usuarioId: usuarioId}
+                ]).execute();
+
+            res.status(200).send();
+
+        }catch (err){
+            res.status(500).send(`Erro na operação de se interessar. ${err.message}`)
+        }
+
+
+    }
 
     public static async cadastrar(req: Request, res: Response) {
         try {
@@ -47,6 +68,14 @@ export class UsuarioController {
 
             res.json(`ERRO NO CADASTRO: ${err.message}`);
         }
+
+    }
+
+    //todo deletar Anuncio
+    static async deletarAnuncio(req: Request, res: Response){
+        const {anuncioId} = req.body;
+        const {usuarioId} = req.body;
+
 
     }
 
