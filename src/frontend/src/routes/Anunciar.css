@@ -1,0 +1,21 @@
+.main-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.div-dois {
+    display: flex;
+}
+
+.label-input {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
+.div-com-tres {
+    display: flex;
+}
+.radio-1 {
+    margin-left: 8px;
+}
