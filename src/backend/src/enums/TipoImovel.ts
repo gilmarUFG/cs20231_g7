@@ -4,5 +4,6 @@ export enum TipoImovel{
     APARTAMENTO = "apartamento",
     CASA = "casa",
 
+    REPUBLICA = "republica",
     KINET = "kitnet"
 }
