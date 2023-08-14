@@ -3,7 +3,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
+RUN npm install ts-node
 RUN npm install @types/express @types/node
+RUN npm install
 
 CMD ["npm", "start"]

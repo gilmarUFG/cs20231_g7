@@ -13,9 +13,5 @@ export class Universidade{
     @Column()
     endereco: string;
 
-    @ManyToOne(() => Anuncio, (anuncio) => anuncio.universidadesProximas)
-    anuncioProximo: Anuncio;
-
-
 
 }

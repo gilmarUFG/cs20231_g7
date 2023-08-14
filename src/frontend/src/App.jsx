@@ -1,6 +1,5 @@
 import './App.css'
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,69 +7,124 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import ImagemPredio from './components/ImagemPredio';
-import SelectInput from './components/SelectInput';
-import PesquisaInput from './components/PesquisaInput';
 import ButtonAppBar from './components/ButtonAppBar';
+import FormEntrar from './components/FormEntrar';
+import { useState } from 'react';
+import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
 
-const navItems = ['Alugar', 'Anunciar', 'Entrar'];
+import { Outlet } from 'react-router-dom';
+
+import FormCadastro from './components/FormCadastro';
+
+
+
+Modal.setAppElement('#root');
 
 function App() {
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
+  const [entrarIsOpen, setEntrarIsOpen] = useState(false);
+  const [cadastrarIsOpen, setCadastrarIsOpen] = useState(false);
+  {/* Fechar os modais*/ }
 
 
+  const entrarClose = () => {
+    setEntrarIsOpen(false);
+  }
 
+  const entrarOpen = () => {
+    setEntrarIsOpen(true);
+    setCadastrarIsOpen(false);
+  }
+
+  const cadastrarClose = () => {
+    setCadastrarIsOpen(false);
+  }
+
+  const cadastrarOpen = () => {
+    setCadastrarIsOpen(true);
+    setEntrarIsOpen(false);
+  }
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar className='barra-nav' component="nav" color="default">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <img src="./logologo.svg" alt="Logo UniRent" />
+
+            <Link to='/' onClick={entrarClose}><img className="img-logo" src="./logologo.svg" alt="Logo UniRent" /></Link>
+
           </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <ButtonAppBar />
+          <Box >
+
+            <ButtonAppBar setCadastrarIsOpen={setCadastrarIsOpen} setEntrarIsOpen={setEntrarIsOpen} />
+
+            <Modal
+              isOpen={entrarIsOpen}
+              onRequestClose={entrarClose}
+              contentLabel='Alugar'
+              overlayClassName='modal-overlay'
+              className='modal-content-entrar'
+            >
+              <div>
+                <button className='button-fechar' onClick={entrarClose}> x </button>
+              </div>
+              <div className='div-modal-entrar'>
+                <div>
+                  <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+                </div>
+                <div>
+                  <FormEntrar entrarClose={entrarClose}/>
+                </div>
+                <h5>Ou</h5>
+                <div>
+                  <Link onClick={cadastrarOpen}>Cadastre-se aqui</Link>
+                </div>
+              </div>
+            </Modal>
+            <Modal
+              isOpen={cadastrarIsOpen}
+              onRequestClose={cadastrarClose}
+              contentLabel='Cadastro'
+              overlayClassName='modal-overlay'
+              className='modal-content-cadastrar'
+            >
+              <div>
+                <button className='button-fechar' onClick={cadastrarClose}> x </button>
+              </div>
+              <div>
+                <div className='div-modal-entrar'>
+                  <div>
+                    <img className="img-logo" src="./logologo.svg" alt="Logo UniRent" />
+                  </div>
+                  <div>
+                    <FormCadastro entrarOpen={entrarOpen} />
+                  </div>
+                  <h5>Ou</h5>
+                  <div>
+                    <Link onClick={entrarOpen}>Entre aqui</Link>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+
           </Box>
         </Toolbar>
       </AppBar>
       <Box component="main" sx={{ p: 3 }}>
+        <Toolbar />
         <Toolbar>
-          <ImagemPredio />
- 
-              <h1>Encontre imóveis próximos à faculdade</h1>
-              <PesquisaInput />
-          <SelectInput />
-          <input className="pesquisa-input-submit" type="submit" name="Pesquisar" id="pesquisar" value="Pesquisar" />
+          <Outlet />
         </Toolbar>
-        
       </Box>
     </Box>
   );
 }
 
-App.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default App;

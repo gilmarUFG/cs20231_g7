@@ -7,6 +7,7 @@ import chalk from "chalk";
 
 
 export interface DadosIniciais {
+    fotoDePerfil: string;
     email: string;
     senha: string;
     nome: string;
@@ -22,14 +23,34 @@ export interface DadosNaoSensiveis {
 const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
 
 
-export class UsuarioController{
-
-    public static async cadastrar(req: Request, res: Response){
+export class UsuarioController {
+    static async seInteresar(req: Request, res: Response) {
         try{
-            const {email, senha, nome, universidade}: DadosIniciais = req.body;
+            const {anuncioId} = req.body;
+            const {usuarioId} = req.body;
+
+            await UniRentDataSource.createQueryBuilder().
+                insert()
+                .into("lista_de_interesse")
+                .values([
+                    {anuncioId : anuncioId , usuarioId: usuarioId}
+                ]).execute();
+
+            res.status(200).send();
+
+        }catch (err){
+            res.status(500).send(`Erro na operação de se interessar. ${err.message}`)
+        }
+
+
+    }
+
+    public static async cadastrar(req: Request, res: Response) {
+        try {
+            const { email, senha, nome, universidade }: DadosIniciais = req.body;
             UsuarioController.isBodyValido(req.body, res);
 
-            if((await UsuarioRepository.findOneBy({email: email})) !==null){
+            if ((await UsuarioRepository.findOneBy({ email: email })) !== null) {
                 res.status(500);
                 throw new Error(`email já cadastrado`);
             }
@@ -38,11 +59,11 @@ export class UsuarioController{
 
             await UsuarioRepository.save(usuario);
 
-            const token = jwt.sign({id: usuario.id},Environment.SECRET_KEY);
+            const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
 
-            res.json({token: token}).status(201);//created
+            res.json({ token: token }).status(201);//created
 
-        }catch (err){
+        } catch (err) {
 
 
             res.json(`ERRO NO CADASTRO: ${err.message}`);
@@ -50,16 +71,24 @@ export class UsuarioController{
 
     }
 
-    private static isBodyValido({email, senha}, res: Response) {
+    //todo deletar Anuncio
+    static async deletarAnuncio(req: Request, res: Response){
+        const {anuncioId} = req.body;
+        const {usuarioId} = req.body;
 
 
-        if(senha==null || email==null) {
+    }
+
+    private static isBodyValido({ email, senha }, res: Response) {
+
+
+        if (senha == null || email == null) {
             res.status(400);
             throw new Error(`email ou senha nulo(s)`)
         }
 
 
-        if(email.replace(/\s/g, '')=='' || senha.replace(/\s/g, '')=='') {
+        if (email.replace(/\s/g, '') == '' || senha.replace(/\s/g, '') == '') {
             res.status(400);
             throw new Error(`email ou senha em branco(s).`)
         }
@@ -67,70 +96,58 @@ export class UsuarioController{
 
     }
 
+    public static async login(req: Request, res: Response) {
+        try {
+            const { email, senha } = req.body;
+            UsuarioController.isBodyValido({ email, senha }, res);
+
+            const usuario = await UsuarioRepository.findOneBy({ email: email });
+
+            if (usuario === null) {
+                res.status(500);
+                throw new Error(`Usuario de email ${email} não cadastrado`);
+            }
+
+            if (senha !== usuario.senha) {
+                res.status(500);
+                throw new Error(`Email ou senha incorretos`);
+            }
 
 
+            const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
+            res.json({ token: token });
 
-
-    public static async login(req: Request, res: Response){
-        try{
-           const {email,senha} = req.body;
-            UsuarioController.isBodyValido({email,senha},res);
-
-           const usuario =  await UsuarioRepository.findOneBy({email: email});
-
-           if(usuario===null) {
-               res.status(500);
-               throw new Error(`Usuario de email ${email} não cadastrado`);
-           }
-
-           if(senha !== usuario.senha) {
-               res.status(500);
-               throw new Error(`Email ou senha incorretos`);
-           }
-
-
-            const token = jwt.sign({id: usuario.id}, Environment.SECRET_KEY);
-            res.json({token: token});
-
-        }catch (err){
+        } catch (err) {
             res.json(`ERRO NO LOGIN: ${err.message}`);
         }
     }
 
 
-public static async listar(req: Request, res: Response){
-        try{
+    public static async listar(req: Request, res: Response) {
+        try {
             const listaDeUsers = await UsuarioRepository.find();
 
-            const listaSegura = listaDeUsers.map((usuarioCompleto)=>{
-                let {id,nome,email}: DadosNaoSensiveis = usuarioCompleto;
-                return {id,nome,email};
+            const listaSegura = listaDeUsers.map((usuarioCompleto) => {
+                let { id, nome, email }: DadosNaoSensiveis = usuarioCompleto;
+                return { id, nome, email };
             })
 
             res.json(listaSegura);
-        }catch (err){
+        } catch (err) {
             res.sendStatus(500);
 
         }
 
-}
-    public static async verificarToken(req: Request, res: Response, next: NextFunction){
-        console.log(`verificando o ${req.body.token}}`)
+    }
+    public static async verificarToken(req: Request, res: Response, next: NextFunction) {
         try {
-            const {token} = req.body;
-          jwt.verify(token, Environment.SECRET_KEY);
+            const { token } = req.body;
+            jwt.verify(token, Environment.SECRET_KEY);
 
 
             next();
-        }catch (err){
+        } catch (err) {
             res.status(500).json(`Toekn inválido: ${err}`);
         }
     }
-
-
-
-
-
-
-
 }

@@ -4,7 +4,7 @@ import './ImagemPredio.css'
 const ImagemPredio = () => {
   return (
     <div>
-        <img src="./predioBody.png" alt="Foto do Prédio" width={800} />
+        <img src="./predioBody.png" alt="Foto do Prédio" width={750} />
     </div>
   )
 }

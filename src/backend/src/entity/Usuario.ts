@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn,ManyToMany } from "typeorm";
 import { DadosIniciais } from "../controller/UsuarioController.js";
 import { Anuncio } from "./Anuncio.js";
 
@@ -31,12 +31,31 @@ export class Usuario {
     @OneToMany(()=> Anuncio, anuncio=> anuncio.usuario, {cascade: true})
     anuncios: Anuncio[];
 
+    @Column("longtext",{
+        name: "foto_de_perfil",
+        nullable: true,
+
+    })
+    fotoDePerfil: string;
+
+
+    @Column({
+        nullable: true
+    })
+    telefone: string;
+
+    @ManyToMany(()=>Anuncio, anun=>anun.interessados)
+    listaDeInteresse: Anuncio[];
+
+
+
 
     withProperties(propriedades:DadosIniciais){
         this.email = propriedades.email;
         this.senha = propriedades.senha;
         this.nome = propriedades.nome;
         this.universidade = propriedades.universidade;
+        this.fotoDePerfil = propriedades.fotoDePerfil;
         this.anuncios = [];
         return this;
     }
