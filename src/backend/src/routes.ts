@@ -9,6 +9,7 @@ export const routesSecurity = Router();
 routesSecurity.use(UsuarioController.verificarToken);
 
 /**********USUSARIO*********/
+routes.get('/usuario/obter/:id', UsuarioController.obter)
 routes.get('/usuario/listar', UsuarioController.listar);
 routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
 routes.post('/usuario/login', UsuarioController.login);//retorna o token
@@ -18,6 +19,7 @@ routesSecurity.post('/usuario/seInteressar', UsuarioController.seInteresar);
 
 
 /*******ANUNCIO********/
+routes.get('/anuncio/obterPorUsuario/:id',AnuncioController.obterPorUsuario)
 routes.get('/anuncio/listarTodos', AnuncioController.listar);
 routes.post('/anuncio/detalharDeslogado',AnuncioController.detalharAnuncioDeslogado);
 routes.post('/anuncio/filtrar', AnuncioController.filtrarPageable);

@@ -121,6 +121,8 @@ export class AnuncioController {
 
             let anuncio = await conseguirAnuncio(idAnuncio, true, true, true);
 
+            if(anuncio===null) throw new Error(`Anuncio nao encontrado`);
+
             anuncio.interessados = anuncio.interessados.map(interessado=>{
                 let seguro = interessado;
                  seguro.senha= '***';
@@ -147,7 +149,33 @@ export class AnuncioController {
     }
 
 
+    public static async obterPorUsuario(req:Request, res: Response){
+        try{
+            const anuncios: Anuncio[] =await  UniRentDataSource.createQueryBuilder()
+                .select("anuncio.*")
+                .from(Anuncio, "")
+                .innerJoin("anuncio.dono","usuario")
+                .execute();
 
+
+
+                for (const anuncio of anuncios) {
+                    const preview = await UniRentDataSource.createQueryBuilder()
+                        .select("id,imagem")
+                        .from(LocalPreview, "")
+                        .where(`anuncioId=:id`, {id : anuncio.id})
+                        .execute();
+                    anuncio.localPreviews = new Array<LocalPreview>;
+                    anuncio.localPreviews.push(preview);
+                }
+
+
+            res.status(200).send(anuncios);
+
+        }catch (err){
+            res.status(500).send(err.message)
+        }
+    }
 
 
     public static async listar(req: Request, res: Response) {

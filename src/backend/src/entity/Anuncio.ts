@@ -22,8 +22,7 @@ export class Anuncio{
     @Column({type: 'enum', enum: TipoAluguel, default: TipoAluguel.LOCACAO})
      tipoAluguel: TipoAluguel;
 
-    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
-    usuario: Usuario;
+
 
     @Column({
         type : 'date',
@@ -93,6 +92,8 @@ export class Anuncio{
     })
     localPreviews: LocalPreview[];
 
+    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
+    dono: Usuario;
 
     @ManyToMany(()=>Usuario, user=>user.listaDeInteresse)
     @JoinTable({
