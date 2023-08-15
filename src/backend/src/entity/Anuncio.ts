@@ -84,6 +84,7 @@ export class Anuncio{
 
     @Column('simple-array',{
         name: "universidades_proximas",
+        nullable: true
     })
     universidadesProximas : string[]
 
@@ -103,21 +104,21 @@ export class Anuncio{
 
     withProperties(body: AnuncioDadosIniciais) {
 
-        this.tipoAluguel = body.tipoAluguel;
+        this.tipoAluguel = body?.tipoAluguel;
         this.dataPublicacao = new Date();
-        this.tipoImovel = body.tipoImovel;
-        this.quartos = body.quartos;
-        this.area = body.area;
-        this.vagasGaragem = body.vagasGaragem;
-        this.aceitaAnimais = body.aceitaAnimais;
-        this.valorAluguel = body.valorAlguel;
-        this.valorCondominio = body.valorCondominio;
-        this.valorIPTU = body.valorIPTU;
-        this.comodidades = body.comodidades;
-        this.descricao = body.descricao;
+        this.tipoImovel = body?.tipoImovel;
+        this.quartos = body?.quartos;
+        this.area = body?.area;
+        this.vagasGaragem = body?.vagasGaragem;
+        this.aceitaAnimais = body?.aceitaAnimais;
+        this.valorAluguel = body?.valorAlguel;
+        this.valorCondominio = body?.valorCondominio;
+        this.valorIPTU = body?.valorIPTU;
+        this.comodidades = body?.comodidades;
+        this.descricao = body?.descricao;
         this.loacalizacaoGoogleMaps = body?.localizacaoGoogleMaps;
         console.log(body)
-        this.universidadesProximas = body.universidadesProximas;
+        this.universidadesProximas = body?.universidadesProximas;
         return this;
     }
 }

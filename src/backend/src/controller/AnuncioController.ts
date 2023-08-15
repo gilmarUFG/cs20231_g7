@@ -68,7 +68,7 @@ export class AnuncioController {
 
             console.log(anuncioDados)
 
-            const localPreviews = anuncioDados.imagens.map(imagem=>{
+            const localPreviews = anuncioDados?.imagens.map(imagem=>{
                 return new LocalPreview(imagem,anuncio);
             })
 

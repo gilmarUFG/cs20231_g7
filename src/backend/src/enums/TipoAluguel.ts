@@ -4,7 +4,7 @@ export enum TipoAluguel{
     LOCACAO = "LOCACAO",
     SUBLOCACAO = "SUBLOCACAO",
 
-    APARTAMENTO = "apartamneto",
-    CASA = "casa",
-    REPUBLICA="republica"
+    APARTAMENTO = "APARTAMENTO",
+    CASA = "CASA",
+    REPUBLICA="REPUBLICA"
 }
