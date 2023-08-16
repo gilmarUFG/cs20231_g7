@@ -8,6 +8,10 @@ import {  LessThanOrEqual, Like } from "typeorm";
 import { LocalPreview } from "../entity/LocalPreview.js";
 
 export interface AnuncioDadosIniciais {
+
+    endereco: string;
+    id?:number;
+    titulo : string;
     localizacaoGoogleMaps: string;
     tipoAluguel: TipoAluguel;
     dataPublicacao: Date;
@@ -46,6 +50,23 @@ async function conseguirAnuncio(idAnuncio: string,uniPresent: boolean, interessa
 }
 
 export class AnuncioController {
+
+
+
+    public static async editarAnuncio(req: Request, res: Response){
+        try{
+            const novoAnuncio: AnuncioDadosIniciais = req.body.anuncio;
+            const anuncio = new Anuncio().withProperties(novoAnuncio);
+            await UniRentDataSource.getRepository(Anuncio)
+                .save(anuncio
+                );
+            res.status(200).send(await UniRentDataSource.getRepository(Anuncio).findBy({id: anuncio.id}));
+
+        }catch (err){
+            res.status(500).send(err.message);
+        }
+    }
+
 
     public static async cadastrar(req: Request, res: Response) {
         try {

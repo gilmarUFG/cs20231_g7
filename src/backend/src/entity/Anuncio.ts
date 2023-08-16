@@ -14,6 +14,9 @@ export class Anuncio{
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    titulo : string;
+
     @Column({
         nullable: true
     })
@@ -104,7 +107,11 @@ export class Anuncio{
 
 
     withProperties(body: AnuncioDadosIniciais) {
-
+        if(body.id){
+            this.id = body.id;
+        }
+        this.endereco = body.endereco;
+        this.titulo = body?.titulo;
         this.tipoAluguel = body?.tipoAluguel;
         this.dataPublicacao = new Date();
         this.tipoImovel = body?.tipoImovel;
@@ -118,7 +125,6 @@ export class Anuncio{
         this.comodidades = body?.comodidades;
         this.descricao = body?.descricao;
         this.loacalizacaoGoogleMaps = body?.localizacaoGoogleMaps;
-        console.log(body)
         this.universidadesProximas = body?.universidadesProximas;
         return this;
     }
