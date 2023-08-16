@@ -22,6 +22,8 @@ Modal.setAppElement("#root");
 function App() {
   const [entrarIsOpen, setEntrarIsOpen] = useState(false);
   const [cadastrarIsOpen, setCadastrarIsOpen] = useState(false);
+
+  const [login, setLogin] = useState(false);
   {
     /* Fechar os modais*/
   }
@@ -60,6 +62,8 @@ function App() {
           </Typography>
           <Box>
             <ButtonAppBar
+              login={login}
+              setLogin={setLogin}
               setCadastrarIsOpen={setCadastrarIsOpen}
               setEntrarIsOpen={setEntrarIsOpen}
             />
@@ -78,7 +82,11 @@ function App() {
                 </button>
                 <div className="div-modal-entrar">
                   <img className="img-logo" src={Logo} alt="Logo UniRent" />
-                  <FormEntrar entrarClose={entrarClose} />
+                  <FormEntrar
+                    loginT={login}
+                    setLogin={setLogin}
+                    entrarClose={entrarClose}
+                  />
                   <h5>Ou</h5>
                   <div>
                     <Link onClick={cadastrarOpen}>Cadastre-se aqui</Link>

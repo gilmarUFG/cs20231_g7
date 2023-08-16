@@ -2,7 +2,6 @@ import { useState } from "react";
 import api from "../services/api.jsx";
 import "./Anunciar.css";
 import Uploader from "../components/Uploader/index.jsx";
-import { Link } from "react-router-dom";
 
 const Anunciar = () => {
   const [titulo, setTitulo] = useState("");

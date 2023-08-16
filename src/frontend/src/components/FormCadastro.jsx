@@ -10,34 +10,21 @@ const FormCadastro = ({ entrarOpen }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  const cadastrando = {
+    email: email,
+    senha: senha,
+    nome: nomeCompleto,
+    universidade: universidade,
+    telefone: telefone,
+  };
+
   const handleUniversidade = (event) => {
     setUniversidade(event.target.value);
   };
 
   useEffect(() => {
     api
-      .post("/user", {
-        usuarioId: 2,
-        anuncio: {
-          tipoAluguel: "REPUBLICA",
-          tipoImovel: "APARTAMENTO",
-          quartos: 5,
-          area: 8956,
-          vagasGaragem: 1,
-          aceitaAnimais: true,
-          valorAlguel: 1500.99,
-          valorCondominio: 15.5,
-          valorIPTU: 99,
-          comodidades: ["Laje", "Lazeres"],
-          descricao: "Apartamento aconchegante longe do centro da cidade.",
-          localizacaoGoogleMaps: "https://goo.gl/maps/E616gZfVdWCGbnNX7",
-          imagens: ["IMAGEM1", "IMAGEM2", "IMAGEM3"],
-          universidadesProximas: ["Uni Universitaria"],
-        },
-
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjkxOTg0NDQzfQ.CQZNB1MWIilJU9BkToiuJ6VQ3W2aIqos-_Rc3mYbScA",
-      })
+      .post("/usuario/cadastrar", cadastrando)
       .then(function (response) {
         console.log(response);
       })
