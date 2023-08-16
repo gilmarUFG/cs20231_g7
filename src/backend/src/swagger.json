@@ -3,7 +3,7 @@
     "info": {
         "title": "Documentação da API da UniRent",
         "description": "Esta API tem por objetivo permitir o Cadastro e pesquisa de imóveis e a busca de Usuários na Base de dados da UniRent.",
-        "termsOfService": "http://unirent.cloud/termos-servico/",
+        "termsOfService": "https://unirent.cloud/termos-servico/",
         "contact": [
             "vitor_ribeiro@discente.ufg.br",
             "joao.tavares@discente.ufg.br"
@@ -12,7 +12,7 @@
     },
     "servers": [
         {
-            "url": "http://api.unirent.cloud/",
+            "url": "https://api.unirent.cloud/",
             "description": "Servidor de desenvolvimento"
         }
     ],
