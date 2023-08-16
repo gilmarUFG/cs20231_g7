@@ -22,6 +22,11 @@ const Home = () => {
           <h3>Anúncios Recentes</h3>
           <Link to="/alugar">Ver mais</Link>
         </div>
+        <div>
+          <div className='cards'>
+          
+          </div>
+        </div>
       </div>
     </div>
   )

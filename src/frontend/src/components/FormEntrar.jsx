@@ -9,7 +9,9 @@ export default function FormEntrar({ entrarClose }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
+        api.post(
+            // fazer api
+        )
 
 
 
@@ -18,27 +20,27 @@ export default function FormEntrar({ entrarClose }) {
     }
 
     return (
-        <>
             <form className='form-entrar' onSubmit={handleSubmit}>
-                <label className='form-entrar'>
+                <label>
                     <span> E-mail </span>
                     <input
                         type="email"
                         name='name'
+                        placeholder='Insira seu email'
                         onChange={(event) => (setEmail(event.target.value))}
                     />
                 </label>
-                <label className='form-entrar'>
+                <label>
                     <span> Senha </span>
                     <input
                         type="password"
                         name='password'
+                        placeholder='Insira sua senha'
                         onChange={(event) => (setSenha(event.target.value))}
                     />
                 </label>
-                <input type="submit" value="Entrar" />
+                <button type="submit">Enviar</button>
             </form>
-        </>
     );
 }
 

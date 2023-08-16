@@ -9,6 +9,7 @@ import Home from "./routes/Home.jsx";
 import ErrorPage from './routes/ErrorPage.jsx';
 import Alugar from './routes/Alugar.jsx';
 import Anunciar from './routes/Anunciar.jsx';
+import Anuncio from './routes/Anuncio.jsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/alugar",
         element: <Alugar />,
+      },
+      {
+        path: "/alugar/anuncio/:id",
+        element: <Anuncio />,
       },
       {
         path: "/anunciar",

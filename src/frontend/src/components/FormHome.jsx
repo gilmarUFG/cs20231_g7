@@ -12,7 +12,6 @@ const FormHome = () => {
     };
 
     const handleSubmit =  (event) => {
-
         event.preventDefault();
 
         setPesquisar('');
