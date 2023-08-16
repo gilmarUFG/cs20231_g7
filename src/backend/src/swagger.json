@@ -1,0 +1,263 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentação da API da UniRent",
+        "description": "Esta API tem por objetivo permitir o Cadastro e pesquisa de imóveis e a busca de Usuários na Base de dados da UniRent.",
+        "termsOfService": "http://unirent.cloud/termos-servico/",
+        "contact": [
+            "vitor_ribeiro@discente.ufg.br",
+            "joao.tavares@discente.ufg.br"
+        ],
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://unirent.cloud/api/v1",
+            "description": "Servidor de desenvolvimento"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Anuncios",
+            "description": "API para gerenciamento de anúncios"
+        },
+        {
+            "name": "Usuarios",
+            "description": "API para gerenciamento de usuários"
+        }
+    ],
+    "paths": {
+        "/anuncios": {
+            "post": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Criar um novo anúncio",
+                "operationId": "cadastrar",
+                "requestBody": {
+                    "description": "Objeto Anúncio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnuncioDadosIniciais"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Anúncio criado com sucesso"
+                    },
+                    "default": {
+                        "description": "Ocorreu um erro",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "erro": "Erro na criação do anúncio"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Obter uma lista de anúncios",
+                "operationId": "listar",
+                "responses": {
+                    "200": {
+                        "description": "Lista de anúncios",
+                        "content": {
+                            "application/json": {
+                                "example": []
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ocorreu um erro",
+                        "content": {
+                            "application/json": {
+                                "example": "Erro na listagem de anúncios"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/anuncios/filtrar": {
+            "post": {
+                "tags": [
+                    "Anuncios"
+                ],
+                "summary": "Obter anúncios filtrados e paginados",
+                "operationId": "filtrarPageable",
+                "requestBody": {
+                    "description": "Opções de filtro",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FiltroAnuncio"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Anúncios filtrados e paginados",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "anuncios": [],
+                                    "total": 0,
+                                    "pagina": 1,
+                                    "registros": 0,
+                                    "limitePorPagina": 10
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Ocorreu um erro",
+                        "content": {
+                            "application/json": {
+                                "example": "Erro na listagem paginada e filtrada de anúncios"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuarios/listar": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Listar usuários",
+                "operationId": "listarUsuarios",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": 1,
+                                        "nome": "Nome do Usuário",
+                                        "email": "usuario@example.com"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao listar usuários"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AnuncioDadosIniciais": {
+                "type": "object",
+                "properties": {
+                    "tipoAluguel": {
+                        "$ref": "#/components/schemas/TipoAluguel"
+                    },
+                    "dataPublicacao": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "tipoImovel": {
+                        "$ref": "#/components/schemas/TipoImovel"
+                    },
+                    "quartos": {
+                        "type": "integer"
+                    },
+                    "area": {
+                        "type": "number"
+                    },
+                    "vagasGaragem": {
+                        "type": "integer"
+                    },
+                    "aceitaAnimais": {
+                        "type": "boolean"
+                    },
+                    "valorAlguel": {
+                        "type": "number"
+                    },
+                    "valorCondominio": {
+                        "type": "number"
+                    },
+                    "valorIPTU": {
+                        "type": "number"
+                    },
+                    "comodidades": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "descricao": {
+                        "type": "string"
+                    }
+                }
+            },
+            "FiltroAnuncio": {
+                "type": "object",
+                "properties": {
+                    "tipoAluguel": {
+                        "type": "string"
+                    },
+                    "valorAluguel": {
+                        "type": "number"
+                    },
+                    "quartos": {
+                        "type": "integer"
+                    },
+                    "area": {
+                        "type": "number"
+                    },
+                    "descricaoLike": {
+                        "type": "string"
+                    }
+                }
+            },
+            "TipoAluguel": {
+                "type": "string",
+                "enum": [
+                    "Aluguel",
+                    "Venda"
+                ]
+            },
+            "TipoImovel": {
+                "type": "string",
+                "enum": [
+                    "Casa",
+                    "Apartamento"
+                ]
+            },
+            "UsuarioDados": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "senha": {
+                        "type": "string"
+                    },
+                    "nome": {
+                        "type": "string"
+                    },
+                    "universidade": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
