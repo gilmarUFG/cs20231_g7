@@ -57,6 +57,9 @@ export class AnuncioController {
         try{
             const novoAnuncio: AnuncioDadosIniciais = req.body.anuncio;
             const anuncio = new Anuncio().withProperties(novoAnuncio);
+            if(!(await UniRentDataSource.getRepository(Anuncio).exist({where:{id : anuncio.id}}))){
+                throw new Error(`Anuncio não existe`)
+            }
             await UniRentDataSource.getRepository(Anuncio)
                 .save(anuncio
                 );
