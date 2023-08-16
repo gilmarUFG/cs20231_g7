@@ -8,11 +8,11 @@
             "vitor_ribeiro@discente.ufg.br",
             "joao.tavares@discente.ufg.br"
         ],
-        "version": "1.0.0"
+        "version": "1.1.0"
     },
     "servers": [
         {
-            "url": "http://unirent.cloud/api/v1",
+            "url": "http://api.unirent.cloud/",
             "description": "Servidor de desenvolvimento"
         }
     ],
@@ -27,235 +27,471 @@
         }
     ],
     "paths": {
-        "/anuncios": {
-            "post": {
-                "tags": [
-                    "Anuncios"
-                ],
-                "summary": "Criar um novo anúncio",
-                "operationId": "cadastrar",
-                "requestBody": {
-                    "description": "Objeto Anúncio",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AnuncioDadosIniciais"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Anúncio criado com sucesso"
-                    },
-                    "default": {
-                        "description": "Ocorreu um erro",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "erro": "Erro na criação do anúncio"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
+        "/usuario/obter/{id}": {
             "get": {
-                "tags": [
-                    "Anuncios"
-                ],
-                "summary": "Obter uma lista de anúncios",
-                "operationId": "listar",
-                "responses": {
-                    "200": {
-                        "description": "Lista de anúncios",
-                        "content": {
-                            "application/json": {
-                                "example": []
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Ocorreu um erro",
-                        "content": {
-                            "application/json": {
-                                "example": "Erro na listagem de anúncios"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/anuncios/filtrar": {
-            "post": {
-                "tags": [
-                    "Anuncios"
-                ],
-                "summary": "Obter anúncios filtrados e paginados",
-                "operationId": "filtrarPageable",
-                "requestBody": {
-                    "description": "Opções de filtro",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/FiltroAnuncio"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Anúncios filtrados e paginados",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "anuncios": [],
-                                    "total": 0,
-                                    "pagina": 1,
-                                    "registros": 0,
-                                    "limitePorPagina": 10
-                                }
-                            }
-                        }
-                    },
-                    "default": {
-                        "description": "Ocorreu um erro",
-                        "content": {
-                            "application/json": {
-                                "example": "Erro na listagem paginada e filtrada de anúncios"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/usuarios/listar": {
-            "get": {
+                "summary": "Obtém informações de um usuário pelo ID.",
                 "tags": [
                     "Usuarios"
                 ],
-                "summary": "Listar usuários",
-                "operationId": "listarUsuarios",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID do usuário."
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "Lista de usuários",
-                        "content": {
-                            "application/json": {
-                                "example": [
-                                    {
-                                        "id": 1,
-                                        "nome": "Nome do Usuário",
-                                        "email": "usuario@example.com"
-                                    }
-                                ]
-                            }
-                        }
+                        "description": "Sucesso."
                     },
                     "500": {
-                        "description": "Erro ao listar usuários"
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/usuario/listar": {
+            "get": {
+                "summary": "Lista todos os usuários cadastrados.",
+                "tags": [
+                    "Usuarios"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/usuario/cadastrar": {
+            "post": {
+                "summary": "Realiza o cadastro de um novo usuário.",
+                "tags": [
+                    "Usuarios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UsuarioCadastro"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/usuario/login": {
+            "post": {
+                "summary": "Realiza o login do usuário.",
+                "tags": [
+                    "Usuarios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CredenciaisLogin"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/usuario/seInteressar": {
+            "post": {
+                "summary": "Indica interesse em um anúncio.",
+                "tags": [
+                    "Usuarios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/InteresseAnuncio"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "usuario/seDesinteressar": {
+            "post": {
+                "summary": "Remove interesse de um usuário por um anúncio",
+                "tags": [
+                    "Usuarios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/InteresseAnuncio"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/obterPorUsuario/{id}": {
+            "get": {
+                "summary": "Obtém anúncios de um usuário pelo ID.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID do usuário."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/listarTodos": {
+            "get": {
+                "summary": "Lista todos os anúncios.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/detalharDeslogado": {
+            "post": {
+                "summary": "Detalha um anúncio sem necessidade de login.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/DetalheAnuncioDeslogado"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/filtrar": {
+            "post": {
+                "summary": "Filtra anúncios com base em parâmetros.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Parâmetros de filtragem."
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/FiltroAnuncio"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "400": {
+                        "description": "Requisição inválida."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/detalharLogado": {
+            "post": {
+                "summary": "Detalha um anúncio com login.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/DetalheAnuncioLogado"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/cadastrar": {
+            "post": {
+                "summary": "Cadastra um novo anúncio.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/AnuncioCadastro"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/anuncio/deletar": {
+            "delete": {
+                "summary": "Deleta um anúncio.",
+                "tags": [
+                    "Anuncios"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/AnuncioDelecao"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso."
+                    },
+                    "500": {
+                        "description": "Erro interno do servidor."
                     }
                 }
             }
         }
     },
-    "components": {
-        "schemas": {
-            "AnuncioDadosIniciais": {
-                "type": "object",
-                "properties": {
-                    "tipoAluguel": {
-                        "$ref": "#/components/schemas/TipoAluguel"
-                    },
-                    "dataPublicacao": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "tipoImovel": {
-                        "$ref": "#/components/schemas/TipoImovel"
-                    },
-                    "quartos": {
-                        "type": "integer"
-                    },
-                    "area": {
-                        "type": "number"
-                    },
-                    "vagasGaragem": {
-                        "type": "integer"
-                    },
-                    "aceitaAnimais": {
-                        "type": "boolean"
-                    },
-                    "valorAlguel": {
-                        "type": "number"
-                    },
-                    "valorCondominio": {
-                        "type": "number"
-                    },
-                    "valorIPTU": {
-                        "type": "number"
-                    },
-                    "comodidades": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "descricao": {
-                        "type": "string"
-                    }
+    "definitions": {
+        "UsuarioCadastro": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string",
+                    "example": "João da Silva",
+                    "description": "Nome completo do usuário."
+                },
+                "email": {
+                    "type": "string",
+                    "example": "joao@example.com",
+                    "description": "Endereço de email do usuário."
+                },
+                "senha": {
+                    "type": "string",
+                    "example": "senha123",
+                    "description": "Senha de acesso do usuário."
+                },
+                "telefone": {
+                    "type": "string",
+                    "example": "(11) 98765-4321",
+                    "description": "Número de telefone do usuário."
                 }
-            },
-            "FiltroAnuncio": {
-                "type": "object",
-                "properties": {
-                    "tipoAluguel": {
-                        "type": "string"
-                    },
-                    "valorAluguel": {
-                        "type": "number"
-                    },
-                    "quartos": {
-                        "type": "integer"
-                    },
-                    "area": {
-                        "type": "number"
-                    },
-                    "descricaoLike": {
-                        "type": "string"
-                    }
+            }
+        },
+        "CredenciaisLogin": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "joao@example.com",
+                    "description": "Endereço de email do usuário."
+                },
+                "senha": {
+                    "type": "string",
+                    "example": "senha123",
+                    "description": "Senha de acesso do usuário."
                 }
-            },
-            "TipoAluguel": {
-                "type": "string",
-                "enum": [
-                    "Aluguel",
-                    "Venda"
-                ]
-            },
-            "TipoImovel": {
-                "type": "string",
-                "enum": [
-                    "Casa",
-                    "Apartamento"
-                ]
-            },
-            "UsuarioDados": {
-                "type": "object",
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "senha": {
-                        "type": "string"
-                    },
-                    "nome": {
-                        "type": "string"
-                    },
-                    "universidade": {
-                        "type": "string"
-                    }
+            }
+        },
+        "InteresseAnuncio": {
+            "type": "object",
+            "properties": {
+                "usuario_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 123,
+                    "description": "ID do usuário interessado."
+                },
+                "anuncio_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 456,
+                    "description": "ID do anúncio que despertou interesse."
+                }
+            }
+        },
+        "DetalheAnuncioDeslogado": {
+            "type": "object",
+            "properties": {
+                "anuncio_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 456,
+                    "description": "ID do anúncio a ser detalhado."
+                }
+            }
+        },
+        "FiltroAnuncio": {
+            "type": "object",
+            "properties": {
+                "titulo": {
+                    "type": "string",
+                    "example": "Apartamento"
+                },
+                "preco_min": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 1000.0
+                },
+                "preco_max": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 2000.0
+                }
+            }
+        },
+        "DetalheAnuncioLogado": {
+            "type": "object",
+            "properties": {
+                "anuncio_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 456,
+                    "description": "ID do anúncio a ser detalhado."
+                },
+                "usuario_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 123,
+                    "description": "ID do usuário que está realizando a solicitação."
+                }
+            }
+        },
+        "AnuncioCadastro": {
+            "type": "object",
+            "properties": {
+                "titulo": {
+                    "type": "string",
+                    "example": "Apartamento espaçoso"
+                },
+                "descricao": {
+                    "type": "string",
+                    "example": "Lindo apartamento de 3 quartos."
+                },
+                "preco": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 1500.0
+                }
+            }
+        },
+        "AnuncioDelecao": {
+            "type": "object",
+            "properties": {
+                "anuncio_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 456,
+                    "description": "ID do anúncio a ser deletado."
+                },
+                "usuario_id": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 123,
+                    "description": "ID do usuário proprietário do anúncio."
                 }
             }
         }
