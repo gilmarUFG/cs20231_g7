@@ -14,6 +14,9 @@ export class Anuncio{
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    titulo : string;
+
     @Column({
         nullable: true
     })
@@ -22,8 +25,7 @@ export class Anuncio{
     @Column({type: 'enum', enum: TipoAluguel, default: TipoAluguel.LOCACAO})
      tipoAluguel: TipoAluguel;
 
-    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
-    usuario: Usuario;
+
 
     @Column({
         type : 'date',
@@ -84,6 +86,7 @@ export class Anuncio{
 
     @Column('simple-array',{
         name: "universidades_proximas",
+        nullable: true
     })
     universidadesProximas : string[]
 
@@ -92,6 +95,8 @@ export class Anuncio{
     })
     localPreviews: LocalPreview[];
 
+    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
+    dono: Usuario;
 
     @ManyToMany(()=>Usuario, user=>user.listaDeInteresse)
     @JoinTable({
@@ -102,22 +107,25 @@ export class Anuncio{
 
 
     withProperties(body: AnuncioDadosIniciais) {
-
-        this.tipoAluguel = body.tipoAluguel;
+        if(body.id){
+            this.id = body.id;
+        }
+        this.endereco = body.endereco;
+        this.titulo = body?.titulo;
+        this.tipoAluguel = body?.tipoAluguel;
         this.dataPublicacao = new Date();
-        this.tipoImovel = body.tipoImovel;
-        this.quartos = body.quartos;
-        this.area = body.area;
-        this.vagasGaragem = body.vagasGaragem;
-        this.aceitaAnimais = body.aceitaAnimais;
-        this.valorAluguel = body.valorAlguel;
-        this.valorCondominio = body.valorCondominio;
-        this.valorIPTU = body.valorIPTU;
-        this.comodidades = body.comodidades;
-        this.descricao = body.descricao;
+        this.tipoImovel = body?.tipoImovel;
+        this.quartos = body?.quartos;
+        this.area = body?.area;
+        this.vagasGaragem = body?.vagasGaragem;
+        this.aceitaAnimais = body?.aceitaAnimais;
+        this.valorAluguel = body?.valorAlguel;
+        this.valorCondominio = body?.valorCondominio;
+        this.valorIPTU = body?.valorIPTU;
+        this.comodidades = body?.comodidades;
+        this.descricao = body?.descricao;
         this.loacalizacaoGoogleMaps = body?.localizacaoGoogleMaps;
-        console.log(body)
-        this.universidadesProximas = body.universidadesProximas;
+        this.universidadesProximas = body?.universidadesProximas;
         return this;
     }
 }

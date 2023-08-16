@@ -28,7 +28,7 @@ export class Usuario {
     @Column()
     universidade: String;
 
-    @OneToMany(()=> Anuncio, anuncio=> anuncio.usuario, {cascade: true})
+    @OneToMany(()=> Anuncio, anuncio=> anuncio.dono, {cascade: true})
     anuncios: Anuncio[];
 
     @Column("longtext",{

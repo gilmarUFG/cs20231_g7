@@ -19,6 +19,8 @@ export interface DadosNaoSensiveis {
     id: number; //todo TROCAR ESSE TIPO
     email: string;
     nome: string;
+
+    telefone: string;
 }
 const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
 
@@ -61,7 +63,9 @@ export class UsuarioController {
 
             const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
 
-            res.json({ token: token }).status(201);//created
+            usuario.senha = ''
+
+            res.json({usuario :usuario ,token: token }).status(201);//created
 
         } catch (err) {
 
@@ -71,13 +75,7 @@ export class UsuarioController {
 
     }
 
-    //todo deletar Anuncio
-    static async deletarAnuncio(req: Request, res: Response){
-        const {anuncioId} = req.body;
-        const {usuarioId} = req.body;
 
-
-    }
 
     private static isBodyValido({ email, senha }, res: Response) {
 
@@ -115,7 +113,8 @@ export class UsuarioController {
 
 
             const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
-            res.json({ token: token });
+            usuario.senha= '';
+            res.json({ usuario : usuario,token: token });
 
         } catch (err) {
             res.json(`ERRO NO LOGIN: ${err.message}`);
@@ -128,8 +127,8 @@ export class UsuarioController {
             const listaDeUsers = await UsuarioRepository.find();
 
             const listaSegura = listaDeUsers.map((usuarioCompleto) => {
-                let { id, nome, email }: DadosNaoSensiveis = usuarioCompleto;
-                return { id, nome, email };
+                let { id, nome, email, telefone }: DadosNaoSensiveis = usuarioCompleto;
+                return { id, nome, email, telefone };
             })
 
             res.json(listaSegura);
@@ -139,6 +138,16 @@ export class UsuarioController {
         }
 
     }
+
+    public static async obter(req: Request, res: Response){
+        try{
+            const usuario = await UniRentDataSource.getRepository(Usuario).find({where : {id: Number.parseInt(req.params.id)}})
+            res.json(usuario);
+        }catch (err){
+            res.status(500).send(err.message);
+        }
+    }
+
     public static async verificarToken(req: Request, res: Response, next: NextFunction) {
         try {
             const { token } = req.body;
