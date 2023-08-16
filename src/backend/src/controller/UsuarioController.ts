@@ -7,6 +7,7 @@ import chalk from "chalk";
 
 
 export interface DadosIniciais {
+    fotoDePerfil: string;
     email: string;
     senha: string;
     nome: string;
@@ -18,11 +19,33 @@ export interface DadosNaoSensiveis {
     id: number; //todo TROCAR ESSE TIPO
     email: string;
     nome: string;
+
+    telefone: string;
 }
 const UsuarioRepository = UniRentDataSource.getRepository(Usuario);
 
 
 export class UsuarioController {
+    static async seInteresar(req: Request, res: Response) {
+        try{
+            const {anuncioId} = req.body;
+            const {usuarioId} = req.body;
+
+            await UniRentDataSource.createQueryBuilder().
+                insert()
+                .into("lista_de_interesse")
+                .values([
+                    {anuncioId : anuncioId , usuarioId: usuarioId}
+                ]).execute();
+
+            res.status(200).send();
+
+        }catch (err){
+            res.status(500).send(`Erro na operação de se interessar. ${err.message}`)
+        }
+
+
+    }
 
     public static async cadastrar(req: Request, res: Response) {
         try {
@@ -40,7 +63,9 @@ export class UsuarioController {
 
             const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
 
-            res.json({ token: token }).status(201);//created
+            usuario.senha = ''
+
+            res.json({usuario :usuario ,token: token }).status(201);//created
 
         } catch (err) {
 
@@ -49,6 +74,8 @@ export class UsuarioController {
         }
 
     }
+
+
 
     private static isBodyValido({ email, senha }, res: Response) {
 
@@ -86,7 +113,8 @@ export class UsuarioController {
 
 
             const token = jwt.sign({ id: usuario.id }, Environment.SECRET_KEY);
-            res.json({ token: token });
+            usuario.senha= '';
+            res.json({ usuario : usuario,token: token });
 
         } catch (err) {
             res.json(`ERRO NO LOGIN: ${err.message}`);
@@ -99,8 +127,8 @@ export class UsuarioController {
             const listaDeUsers = await UsuarioRepository.find();
 
             const listaSegura = listaDeUsers.map((usuarioCompleto) => {
-                let { id, nome, email }: DadosNaoSensiveis = usuarioCompleto;
-                return { id, nome, email };
+                let { id, nome, email, telefone }: DadosNaoSensiveis = usuarioCompleto;
+                return { id, nome, email, telefone };
             })
 
             res.json(listaSegura);
@@ -110,6 +138,16 @@ export class UsuarioController {
         }
 
     }
+
+    public static async obter(req: Request, res: Response){
+        try{
+            const usuario = await UniRentDataSource.getRepository(Usuario).find({where : {id: Number.parseInt(req.params.id)}})
+            res.json(usuario);
+        }catch (err){
+            res.status(500).send(err.message);
+        }
+    }
+
     public static async verificarToken(req: Request, res: Response, next: NextFunction) {
         try {
             const { token } = req.body;

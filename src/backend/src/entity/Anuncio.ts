@@ -1,33 +1,40 @@
-import { Column, Entity, IntegerType, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, IntegerType, ManyToOne, OneToMany,ManyToMany,PrimaryGeneratedColumn, JoinTable} from "typeorm";
 import { Usuario } from "./Usuario.js";
 import { AnuncioDadosIniciais } from "../controller/AnuncioController.js";
 import { TipoAluguel } from "../enums/TipoAluguel.js";
 import { TipoImovel } from "../enums/TipoImovel.js";
 import { JoinColumn } from "typeorm";
-import { Universidade } from "./Universidade.js";
+import { LocalPreview } from "./LocalPreview.js";
 
 
 
 @Entity()
 export class Anuncio{
-    /*
-    valores envolvidos,
-    endereço e
-    características do imóvel
-     */
+
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
+
+    @Column()
+    titulo : string;
+
+    @Column({
+        nullable: true
+    })
+    endereco: string;
 
     @Column({type: 'enum', enum: TipoAluguel, default: TipoAluguel.LOCACAO})
      tipoAluguel: TipoAluguel;
 
-    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
-    usuario: Usuario;
 
-    @Column('date', {})
+
+    @Column({
+        type : 'date',
+        name : "data_publicacao"
+    })
     dataPublicacao: Date;
 
-    @Column({type: 'enum', enum: TipoImovel, default: TipoImovel.DEFAULT})
+
+    @Column({type: 'enum', enum: TipoImovel, default: TipoImovel.DEFAULT, name: "tipo_imovel"})
     tipoImovel: TipoImovel;
 
     @Column('int')
@@ -35,59 +42,90 @@ export class Anuncio{
     @Column('double')
     area: number;
 
-    @Column('int')
+    @Column({
+        type : 'int',
+        name : "vagas_garagem"
+    })
     vagasGaragem: number;
 
-    @Column('boolean')
+    @Column({
+        type: 'boolean',
+        name: "aceita_animais"
+    })
     aceitaAnimais: boolean;
 
-    @Column('double' )
+    @Column({
+        type : 'double',
+        name : "valor_aluguel"
+    } )
     valorAluguel: number;
 
     @Column('double')
     valorCondominio: number;
 
-    @Column('double')
+    @Column({
+        type : 'double',
+        name : "valor_IPTU"
+    })
     valorIPTU: number;
 
     @Column('simple-array')
     comodidades: string[];
+
 
     @Column()
     descricao: string;
 
 
 
-    @OneToMany(()=>Universidade,(universidade)=>universidade.anuncioProximo)
-    universidadesProximas: Universidade[];
+    @Column({
+        name : "localizacao_google_maps",
+        nullable: true
+    })
+    loacalizacaoGoogleMaps: string;
 
+    @Column('simple-array',{
+        name: "universidades_proximas",
+        nullable: true
+    })
+    universidadesProximas : string[]
 
+    @OneToMany(()=>LocalPreview, localPreview=>localPreview.anuncio, {
+        cascade: true,
+    })
+    localPreviews: LocalPreview[];
 
+    @ManyToOne(()=>Usuario, usuario=> usuario.anuncios)
+    dono: Usuario;
 
-/*
-"tipoAluguel": "",
-        "valorAluguel": ,
-        "tamanho": ,
-        "quartos": ,
-        "descricaoLike": ""
- */
+    @ManyToMany(()=>Usuario, user=>user.listaDeInteresse)
+    @JoinTable({
+        name: "lista_de_interesse"
+    })
+    interessados: Usuario[];
+
 
 
     withProperties(body: AnuncioDadosIniciais) {
-        let x = body.tipoAluguel;
-
-        this.tipoAluguel = body.tipoAluguel;
-        this.dataPublicacao = body.dataPublicacao;
-        this.tipoImovel = body.tipoImovel;
-        this.quartos = body.quartos;
-        this.area = body.area;
-        this.vagasGaragem = body.vagasGaragem;
-        this.aceitaAnimais = body.aceitaAnimais;
-        this.valorAluguel = body.valorAlguel;
-        this.valorCondominio = body.valorCondominio;
-        this.valorIPTU = body.valorIPTU;
-        this.comodidades = body.comodidades;
-        this.descricao = body.descricao;
+        if(body.id){
+            this.id = body.id;
+        }
+        this.endereco = body.endereco;
+        this.titulo = body?.titulo;
+        this.tipoAluguel = body?.tipoAluguel;
+        this.dataPublicacao = new Date();
+        this.tipoImovel = body?.tipoImovel;
+        this.quartos = body?.quartos;
+        this.area = body?.area;
+        this.vagasGaragem = body?.vagasGaragem;
+        this.aceitaAnimais = body?.aceitaAnimais;
+        this.valorAluguel = body?.valorAlguel;
+        this.valorCondominio = body?.valorCondominio;
+        this.valorIPTU = body?.valorIPTU;
+        this.comodidades = body?.comodidades;
+        this.descricao = body?.descricao;
+        this.loacalizacaoGoogleMaps = body?.localizacaoGoogleMaps;
+        this.universidadesProximas = body?.universidadesProximas;
         return this;
     }
 }
