@@ -1,11 +1,7 @@
 * {
-   box-sizing: border-box; 
-
+  box-sizing: border-box;
 }
-<<<<<<< HEAD
 
- main {
-   margin: 0 auto;
- }
-=======
->>>>>>> 3658caf4ab0c283512b2e8640964f38b909f2280
+main {
+  margin: 0 auto;
+}

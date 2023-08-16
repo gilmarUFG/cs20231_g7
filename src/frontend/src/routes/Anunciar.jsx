@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../services/api.jsx";
 import "./Anunciar.css";
 import Uploader from "../components/Uploader/index.jsx";
+import { Link } from "react-router-dom";
 
 const Anunciar = () => {
   const [titulo, setTitulo] = useState("");
@@ -15,43 +16,44 @@ const Anunciar = () => {
   const [vagas, setVagas] = useState("");
   const [verRadio, setVerRadio] = useState("");
   const [universidade, setUniversidade] = useState("");
+  const [comodidades, setComodidades] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [localizacao, setLocalizacao] = useState("");
   const [image, setImage] = useState("");
 
   const handleChange = (event) => {
     setTipoMoradia(event.target.value);
   };
 
-  const handleUniversidades = (event) => {
-    setUniversidade(event.target.value);
+  const cadastrarAnuncio = {
+    usuarioId: 2,
+    anuncio: {
+      titulo: titulo,
+      tipoAluguel: "LOCAÇÃO",
+      tipoImovel: tipoMoradia,
+      quartos: quantidadeQuartos,
+      area: areaMetros,
+      vagasGaragem: vagas,
+      aceitaAnimais: verRadio,
+      valorAluguel: precoAluguel,
+      valorCondominio: precoCondominio,
+      valorIPTU: precoIPTU,
+      comodidades: comodidades,
+      endereco: endereco,
+      descricao: descricao,
+      imagens: [image],
+      localizacaoGoogleMaps: localizacao,
+      universidadesProximas: universidade,
+    },
+    token:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkyMTg2NzU1fQ.PLkrRzK7YN-3ArjQMBxeCYjZaYTtUCRWeqfboPt8s00",
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     api
-      .post("/anuncio/cadastrar", {
-        usuarioId: 2,
-        anuncio: {
-          tipoAluguel: "REPUBLICA",
-          tipoImovel: "APARTAMENTO",
-          quartos: 5,
-          area: 8956,
-          vagasGaragem: 1,
-          aceitaAnimais: true,
-          valorAlguel: 1500.99,
-          valorCondominio: 15.5,
-          valorIPTU: precoIPTU,
-          comodidades: ["Laje", "Lazeres"],
-          imagens: [image],
-          descricao: "Apartamento aconchegante longe do centro da cidade.",
-          localizacaoGoogleMaps: "https://goo.gl/maps/E616gZfVdWCGbnNX7",
-          imagens: ["IMAGEM1", "IMAGEM2", "IMAGEM3"],
-          universidadesProximas: ["Uni Universitaria"],
-        },
-
-        token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjkxOTg0NDQzfQ.CQZNB1MWIilJU9BkToiuJ6VQ3W2aIqos-_Rc3mYbScA",
-      })
+      .post("/anuncio/cadastrar", cadastrarAnuncio)
       .then(function (response) {
         console.log(response);
       })
@@ -62,9 +64,9 @@ const Anunciar = () => {
 
   return (
     <>
-      <form className="" onSubmit={handleSubmit}>
-        <h3>Informações gerais</h3>
+      <form onSubmit={handleSubmit}>
         <div className="main-div">
+          <h3>Informações gerais</h3>
           <div className="div-dois">
             <label className="label-input">
               <span>Título</span>
@@ -92,11 +94,11 @@ const Anunciar = () => {
           </div>
           <div>
             <div>
-              <label className="label-input">
+              <label className="label-escrever">
                 <span>Descrição</span>
                 <input
                   type="text"
-                  name=""
+                  name="descricao"
                   placeholder="Adicionar descrição"
                   onChange={(e) => setDescricao(e.target.value)}
                   value={descricao}
@@ -107,7 +109,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Preço do Aluguel</span>
                 <input
-                  type="text"
+                  type="number"
                   name="precoAluguel"
                   onChange={(e) => setPrecoAluguel(e.target.value)}
                   value={precoAluguel}
@@ -116,7 +118,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Preço do Condomínio</span>
                 <input
-                  type="text"
+                  type="number"
                   name="precoCondominio"
                   onChange={(e) => setPrecoCondominio(e.target.value)}
                   value={precoCondominio}
@@ -125,7 +127,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Preço do IPTU</span>
                 <input
-                  type="text"
+                  type="number"
                   name="precoIPTU"
                   onChange={(e) => setPrecoIPTU(e.target.value)}
                   value={precoIPTU}
@@ -136,7 +138,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Quantidade de Quartos</span>
                 <input
-                  type="text"
+                  type="number"
                   name="quantidadeQuartos"
                   onChange={(e) => setQuantidadeQuartos(e.target.value)}
                   value={quantidadeQuartos}
@@ -145,7 +147,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Área (M²)</span>
                 <input
-                  type="text"
+                  type="number"
                   name="area"
                   onChange={(e) => setAreaMetros(e.target.value)}
                   value={areaMetros}
@@ -154,7 +156,7 @@ const Anunciar = () => {
               <label className="label-input">
                 <span>Vagas na Garagem</span>
                 <input
-                  type="text"
+                  type="number"
                   name="vagas"
                   onChange={(e) => setVagas(e.target.value)}
                   value={vagas}
@@ -181,32 +183,56 @@ const Anunciar = () => {
                 />
                 Não
               </div>
-              <label className="label-input">
-                <span>Universidades Próximas</span>
-                <select
-                  onChange={handleUniversidades}
+              <label className="label-escrever">
+                <span>
+                  <h4>Universidades Próximas</h4>
+                </span>
+                <input
+                  type="text"
+                  name="universidade"
+                  placeholder="Adicionar nome da universidade"
+                  onChange={(e) => setUniversidade(e.target.value)}
                   value={universidade}
-                  placeholder="Selecione"
-                >
-                  <option value=""> Selecione </option>
-                  <option value="UFG">
-                    Universidade Federal de Goiás - Campus Colemar Natal e Silva{" "}
-                  </option>
-                  <option value="PUC">PUC - Campus IV</option>
-                </select>
+                />
               </label>
             </div>
           </div>
-          <br />
-          <h3>Comodidades </h3>
-          <div>
-            <h1>Adicionar o select</h1>
-          </div>
-          <br />
-          <h3>Localização</h3>
-          <div>
-            <h1>Localização ??????????????????????????????</h1>
-          </div>
+          <label className="label-escrever">
+            <span>
+              <h4>Comodidades</h4>
+            </span>
+            <input
+              type="text"
+              name="comodidades"
+              placeholder="Adicionar as comodidades do imóvel"
+              onChange={(e) => setComodidades(e.target.value)}
+              value={comodidades}
+            />
+          </label>
+          <label className="label-escrever">
+            <span>
+              <h4>Endereço</h4>
+            </span>
+            <input
+              type="text"
+              name="endereco"
+              placeholder="Adicione o endereço completo do imóvel"
+              onChange={(e) => setEndereco(e.target.value)}
+              value={endereco}
+            />
+          </label>
+          <label className="label-escrever">
+            <span>
+              <h4>Localização</h4>
+            </span>
+            <input
+              type="text"
+              name="localizacao"
+              placeholder="Adicione a URL da localização do imóvel"
+              onChange={(e) => setLocalizacao(e.target.value)}
+              value={localizacao}
+            />
+          </label>
           <Uploader setImage={setImage} />
         </div>
         <input

@@ -18,7 +18,7 @@ const Alugar = () => {
   }, []);
 
   return (
-    <div>
+    <div className="cards">
       {data?.map((item) => (
         <Link
           style={{ textDecoration: "none" }}
