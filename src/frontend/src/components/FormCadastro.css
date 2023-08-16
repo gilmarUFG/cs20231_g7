@@ -3,3 +3,7 @@
     flex-direction: column;
     padding: 4px;
 }
+
+.form-main {
+    margin: 0 auto;
+}

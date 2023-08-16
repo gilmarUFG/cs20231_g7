@@ -1,5 +1,32 @@
 .form-entrar {
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+  color: #00000080;
+}
+
+.form-entrar > label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.form-entrar > label > input {
+  width: 100%;
+  padding: 14px 12px;
+  color: #0000004d;
+  border: 1px solid #0000004d;
+  border-radius: 6px;
+}
+
+.form-entrar > button {
+  border: none;
+  border-radius: 5px;
+  background: var(--blue-2, #68acfd);
+  padding: 14px 12px;
+  color: white;
+  cursor: pointer;
 }
