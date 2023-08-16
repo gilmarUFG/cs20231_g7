@@ -1,44 +1,53 @@
+import "./FormEntrar.css";
+import { useState } from "react";
+import api from "../services/api";
 
-import './FormEntrar.css';
-import {useState} from 'react'
+export default function FormEntrar({ setLogin, entrarClose }) {
+  const [senha, setSenha] = useState("");
+  const [email, setEmail] = useState("");
 
-export default function FormEntrar({ entrarClose }) {
+  const login = {
+    email: email,
+    senha: senha,
+  };
 
-    const [senha, setSenha] = useState('');
-    const [email, setEmail] = useState('');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setLogin(true);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    api
+      .post("/usuario/login", login)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
+    entrarClose();
+  };
 
-
-
-
-        entrarClose();
-    }
-
-    return (
-        <>
-            <form className='form-entrar' onSubmit={handleSubmit}>
-                <label className='form-entrar'>
-                    <span> E-mail </span>
-                    <input
-                        type="email"
-                        name='name'
-                        onChange={(event) => (setEmail(event.target.value))}
-                    />
-                </label>
-                <label className='form-entrar'>
-                    <span> Senha </span>
-                    <input
-                        type="password"
-                        name='password'
-                        onChange={(event) => (setSenha(event.target.value))}
-                    />
-                </label>
-                <input type="submit" value="Entrar" />
-            </form>
-        </>
-    );
+  return (
+    <form className="form-entrar" onSubmit={handleSubmit}>
+      <label>
+        <span> E-mail </span>
+        <input
+          type="email"
+          name="name"
+          placeholder="Insira seu email"
+          onChange={(event) => setEmail(event.target.value)}
+        />
+      </label>
+      <label>
+        <span> Senha </span>
+        <input
+          type="password"
+          name="password"
+          placeholder="Insira sua senha"
+          onChange={(event) => setSenha(event.target.value)}
+        />
+      </label>
+      <button type="submit">Enviar</button>
+    </form>
+  );
 }
-
