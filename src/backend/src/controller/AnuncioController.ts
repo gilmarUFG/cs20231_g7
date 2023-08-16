@@ -8,6 +8,10 @@ import {  LessThanOrEqual, Like } from "typeorm";
 import { LocalPreview } from "../entity/LocalPreview.js";
 
 export interface AnuncioDadosIniciais {
+
+    endereco: string;
+    id?:number;
+    titulo : string;
     localizacaoGoogleMaps: string;
     tipoAluguel: TipoAluguel;
     dataPublicacao: Date;
@@ -47,6 +51,23 @@ async function conseguirAnuncio(idAnuncio: string,uniPresent: boolean, interessa
 
 export class AnuncioController {
 
+
+
+    public static async editarAnuncio(req: Request, res: Response){
+        try{
+            const novoAnuncio: AnuncioDadosIniciais = req.body.anuncio;
+            const anuncio = new Anuncio().withProperties(novoAnuncio);
+            await UniRentDataSource.getRepository(Anuncio)
+                .save(anuncio
+                );
+            res.status(200).send(await UniRentDataSource.getRepository(Anuncio).findBy({id: anuncio.id}));
+
+        }catch (err){
+            res.status(500).send(err.message);
+        }
+    }
+
+
     public static async cadastrar(req: Request, res: Response) {
         try {
             const user: Usuario = await UniRentDataSource.getRepository(Usuario).findOne({
@@ -68,7 +89,7 @@ export class AnuncioController {
 
             console.log(anuncioDados)
 
-            const localPreviews = anuncioDados.imagens.map(imagem=>{
+            const localPreviews = anuncioDados?.imagens.map(imagem=>{
                 return new LocalPreview(imagem,anuncio);
             })
 
@@ -121,6 +142,8 @@ export class AnuncioController {
 
             let anuncio = await conseguirAnuncio(idAnuncio, true, true, true);
 
+            if(anuncio===null) throw new Error(`Anuncio nao encontrado`);
+
             anuncio.interessados = anuncio.interessados.map(interessado=>{
                 let seguro = interessado;
                  seguro.senha= '***';
@@ -147,7 +170,33 @@ export class AnuncioController {
     }
 
 
+    public static async obterPorUsuario(req:Request, res: Response){
+        try{
+            const anuncios: Anuncio[] =await  UniRentDataSource.createQueryBuilder()
+                .select("anuncio.*")
+                .from(Anuncio, "")
+                .innerJoin("anuncio.dono","usuario")
+                .execute();
 
+
+
+                for (const anuncio of anuncios) {
+                    const preview = await UniRentDataSource.createQueryBuilder()
+                        .select("id,imagem")
+                        .from(LocalPreview, "")
+                        .where(`anuncioId=:id`, {id : anuncio.id})
+                        .execute();
+                    anuncio.localPreviews = new Array<LocalPreview>;
+                    anuncio.localPreviews.push(preview);
+                }
+
+
+            res.status(200).send(anuncios);
+
+        }catch (err){
+            res.status(500).send(err.message)
+        }
+    }
 
 
     public static async listar(req: Request, res: Response) {
