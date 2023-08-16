@@ -5,28 +5,37 @@ import { AnuncioController } from "./controller/AnuncioController.js";
 import swaggerUi from "swagger-ui-express";
 
 export const routes = Router();
-
-
-routes.get('/usuario/listar',UsuarioController.listar);
-routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
-routes.post('/usuario/login', UsuarioController.login);//retorna o token
-
-routes.get('/anuncio/listarTodos',AnuncioController.listar);
-routes.post('/anuncio/filtrar',AnuncioController.filtrarPageable);
-
-
 export const routesSecurity = Router();
-
 routesSecurity.use(UsuarioController.verificarToken);
 
-routesSecurity.post('/anuncio/cadastrar',AnuncioController.cadastrar);
+/**********USUSARIO*********/
+routes.get('/usuario/obter/:id', UsuarioController.obter)
+routes.get('/usuario/listar', UsuarioController.listar);
+routes.post('/usuario/cadastrar', UsuarioController.cadastrar); //retorna o token
+routes.post('/usuario/login', UsuarioController.login);//retorna o token
+/*----------*/
+routesSecurity.post('/usuario/seInteressar', UsuarioController.seInteresar);
+/**********USUSARIO*********/
+
+
+/*******ANUNCIO********/
+routes.get('/anuncio/obterPorUsuario/:id',AnuncioController.obterPorUsuario)
+routes.get('/anuncio/listarTodos', AnuncioController.listar);
+routes.post('/anuncio/detalharDeslogado',AnuncioController.detalharAnuncioDeslogado);
+routes.post('/anuncio/filtrar', AnuncioController.filtrarPageable);
+/*----------*/
+routesSecurity.post('/anuncio/detalharLogado', AnuncioController.detalharAnuncioLogado);
+routesSecurity.post('/anuncio/cadastrar', AnuncioController.cadastrar);
+routesSecurity.delete('/anuncio/deletar',AnuncioController.deletarAnuncio)
+routesSecurity.post('/anuncio/editarAnuncio',AnuncioController.editarAnuncio);
+
+/*******ANUNCIO********/
 
 
 
 
 
 
-
-routes.get('/',(req: Request, res: Response)=>{
-    console.log("Peguei")
-    res.sendStatus(204)})
+routes.get('/', (req: Request, res: Response) => {
+    res.sendStatus(204)
+})

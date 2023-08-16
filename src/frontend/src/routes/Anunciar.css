@@ -1,0 +1,44 @@
+.main-div {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245);
+}
+
+.div-dois {
+  display: flex;
+}
+
+.label-input {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  align-items: flex-start;
+}
+
+.label-escrever {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: #00000080;
+}
+
+.label-escrever > label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.label-escrever > label > input {
+  width: 100%;
+  color: #0000004d;
+  border: 1px solid #0000004d;
+  border-radius: 6px;
+}
+
+.div-com-tres {
+  display: flex;
+}
+.radio-1 {
+  margin-left: 8px;
+}
